@@ -172,6 +172,8 @@ class WorldRuntime:
                         observation,
                     )
 
+        self.prediction_engine.close_expired(world_date)
+
         learning = self.engines["LEARNING"]
         learning.process_tick(world_date)
         learning.learn_from_validated_predictions(
@@ -319,17 +321,21 @@ class WorldRuntime:
 
         for resource in self.engines["RESOURCE"].get_all_resources():
             if resource.active:
+                previous = observer.get_latest_observation(resource.resource_id, "PRICE")
                 observations.append({
                     "source_engine": "RESOURCE",
                     "subject_id": resource.resource_id,
                     "subject_type": "RESOURCE",
                     "metric": "PRICE",
                     "value": float(resource.price),
-                    "previous_value": float(resource.base_price),
+                    "previous_value": float(previous.value) if previous is not None else float(resource.base_price),
                 })
 
         for company in self.engines["COMPANY"].companies.values():
             if company.status == "ACTIVE":
+                previous_revenue = observer.get_latest_observation(company.company_id, "REVENUE")
+                previous_profit = observer.get_latest_observation(company.company_id, "PROFIT")
+                previous_growth = observer.get_latest_observation(company.company_id, "GROWTH_RATE")
                 observations.extend([
                     {
                         "source_engine": "COMPANY",
@@ -337,7 +343,7 @@ class WorldRuntime:
                         "subject_type": "COMPANY",
                         "metric": "REVENUE",
                         "value": float(company.revenue),
-                        "previous_value": None,
+                        "previous_value": float(previous_revenue.value) if previous_revenue is not None else None,
                     },
                     {
                         "source_engine": "COMPANY",
@@ -345,7 +351,15 @@ class WorldRuntime:
                         "subject_type": "COMPANY",
                         "metric": "PROFIT",
                         "value": float(company.profit),
-                        "previous_value": None,
+                        "previous_value": float(previous_profit.value) if previous_profit is not None else None,
+                    },
+                    {
+                        "source_engine": "COMPANY",
+                        "subject_id": company.company_id,
+                        "subject_type": "COMPANY",
+                        "metric": "GROWTH_RATE",
+                        "value": float(company.growth_rate),
+                        "previous_value": float(previous_growth.value) if previous_growth is not None else None,
                     },
                 ])
 
