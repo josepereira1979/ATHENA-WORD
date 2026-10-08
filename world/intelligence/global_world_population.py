@@ -48,6 +48,7 @@ class GlobalWorldPopulationEngine:
             {
                 "real_company_id": f"REAL-SEC-{record.cik}",
                 "source_cik": record.cik,
+                "source_identity": f"SEC:{record.cik}",
                 "legal_name": record.legal_name,
                 "ticker": record.ticker,
                 "exchange": record.exchange,
