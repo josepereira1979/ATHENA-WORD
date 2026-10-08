@@ -105,6 +105,19 @@ class CorporateNetworkEngine:
                                                "relationships": [asdict(x) for x in self.relationships.values()]},
                                               indent=2, ensure_ascii=False), encoding="utf-8")
 
+    def intelligence_for_company(self, company_id: str) -> dict:
+        relationships = self.get_relationships(company_id=company_id)
+        return {
+            "company_id": company_id,
+            "network_degree": len(self.get_neighbors(company_id)),
+            "relationships": [asdict(x) for x in relationships],
+            "confirmed_count": sum(x.status == "CONFIRMED" for x in relationships),
+            "average_confidence": (
+                sum(x.confidence for x in relationships) / len(relationships)
+                if relationships else 0.0
+            ),
+        }
+
     def _bootstrap_documented_relationships(self):
         if self.relationships:
             return
