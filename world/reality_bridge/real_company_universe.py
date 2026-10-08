@@ -38,6 +38,7 @@ class RealCompany:
     industry: Optional[str] = None
     active: bool = True
     listing_ids: List[str] = field(default_factory=list)
+    source_cik: Optional[str] = None
 
 
 class RealCompanyUniverse:
@@ -68,6 +69,7 @@ class RealCompanyUniverse:
         sector: Optional[str] = None,
         industry: Optional[str] = None,
         real_company_id: Optional[str] = None,
+        source_cik: Optional[str] = None,
     ) -> RealCompany:
         if not legal_name:
             raise ValueError("legal_name não pode estar vazio.")
