@@ -83,7 +83,7 @@ class WorldRuntime:
             state_file=sf("network_shock_queue_state.json"),
         )
         self.global_family_market_allocator = GlobalFamilyMarketAllocator(self)
-        self.global_market_census = GlobalMarketCensus(self)
+        self._global_market_census = GlobalMarketCensus(self)
         self.family_company_expansion = FamilyCompanyExpansion(
             family_engine=self.engines["FAMILY"],
             company_engine=self.engines["COMPANY"],
@@ -180,10 +180,10 @@ class WorldRuntime:
             self.network_shock_queue.mark_processed(shock.shock_id)
 
     def global_market_census(self) -> Dict[str, Any]:
-        return self.global_market_census.build()
+        return self._global_market_census.build()
 
     def global_market_readiness(self) -> Dict[str, Any]:
-        return self.global_market_census.readiness()
+        return self._global_market_census.readiness()
     def preview_global_family_market_allocation(self, limit: int | None = None) -> Dict[str, Any]:
         return self.global_family_market_allocator.preview(limit=limit)
 
