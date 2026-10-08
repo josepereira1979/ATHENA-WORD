@@ -292,6 +292,16 @@ class ObserverEngine:
             for item in observations
         ]
 
+    def get_latest_observation(self, subject_id: str, metric: str) -> Optional[Observation]:
+        rows = [
+            item
+            for item in self.state.observations.values()
+            if item.subject_id == subject_id and item.metric == metric
+        ]
+        if not rows:
+            return None
+        return max(rows, key=lambda item: (item.world_date, item.tick, item.created_at))
+
     # ANOMALIES
     # ==========================================================
 
