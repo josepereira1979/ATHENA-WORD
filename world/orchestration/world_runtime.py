@@ -28,6 +28,7 @@ from world.intelligence.network_shock_queue import NetworkShockQueue
 from world.intelligence.family_company_expansion import FamilyCompanyExpansion
 from world.intelligence.global_family_market_allocator import GlobalFamilyMarketAllocator
 from world.intelligence.global_market_census import GlobalMarketCensus
+from world.intelligence.global_world_population import GlobalWorldPopulationEngine
 
 
 class WorldRuntime:
@@ -84,6 +85,7 @@ class WorldRuntime:
         )
         self.global_family_market_allocator = GlobalFamilyMarketAllocator(self)
         self._global_market_census = GlobalMarketCensus(self)
+        self.global_world_population = GlobalWorldPopulationEngine(self)
         self.family_company_expansion = FamilyCompanyExpansion(
             family_engine=self.engines["FAMILY"],
             company_engine=self.engines["COMPANY"],
@@ -179,6 +181,17 @@ class WorldRuntime:
             )
             self.network_shock_queue.mark_processed(shock.shock_id)
 
+    def global_world_status(self) -> Dict[str, Any]:
+        return self.global_world_population.status()
+
+    def preview_global_world(self, limit: int | None = None) -> Dict[str, Any]:
+        return self.global_world_population.preview(limit=limit)
+
+    def ingest_global_companies(self, records, allocate: bool = False) -> Dict[str, Any]:
+        return self.global_world_population.ingest_records(records, allocate=allocate)
+
+    def sync_sec_global_companies(self, user_agent: str, max_new: int | None = None, allocate: bool = False) -> Dict[str, Any]:
+        return self.global_world_population.ingest_sec(user_agent, max_new=max_new, allocate=allocate)
     def global_market_census(self) -> Dict[str, Any]:
         return self._global_market_census.build()
 
