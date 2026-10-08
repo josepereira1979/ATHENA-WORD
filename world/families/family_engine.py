@@ -76,6 +76,12 @@ class Family:
     virtual_company_id: Optional[str] = None
     real_company_id: Optional[str] = None
 
+    intelligence_specialization: str = "GENERAL"
+    intelligence_score: float = 0.50
+    predictions_count: int = 0
+    predictions_correct: int = 0
+    predictions_wrong: int = 0
+
 
 # ============================================================
 # FAMILY ENGINE
@@ -770,6 +776,11 @@ class FamilyEngine:
                 # Compatibilidade retroactiva: estados V01 não tinham estes campos.
                 data.setdefault("virtual_company_id", None)
                 data.setdefault("real_company_id", None)
+                data.setdefault("intelligence_specialization", "GENERAL")
+                data.setdefault("intelligence_score", 0.50)
+                data.setdefault("predictions_count", 0)
+                data.setdefault("predictions_correct", 0)
+                data.setdefault("predictions_wrong", 0)
 
                 family = Family(
                     **data
