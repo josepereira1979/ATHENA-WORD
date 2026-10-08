@@ -310,13 +310,14 @@ class WorldRuntime:
 
         for asset in self.engines["MARKET"].get_all_assets():
             if asset.active:
+                previous = observer.get_latest_observation(asset.asset_id, "PRICE")
                 observations.append({
                     "source_engine": "MARKET",
                     "subject_id": asset.asset_id,
                     "subject_type": "ASSET",
                     "metric": "PRICE",
                     "value": float(asset.last_price),
-                    "previous_value": float(asset.previous_price),
+                    "previous_value": float(previous.value) if previous is not None else float(asset.previous_price),
                 })
 
         for resource in self.engines["RESOURCE"].get_all_resources():
