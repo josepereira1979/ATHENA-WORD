@@ -7,6 +7,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional
 
+from .real_company_universe import RealCompanyUniverse
+
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 DATA_DIR = BASE_DIR / "data"
@@ -37,6 +39,7 @@ class RealCompanyMapping:
 
     real_company_id: str
     real_company_name: str
+    listing_id: Optional[str] = None
 
     ticker: Optional[str] = None
     exchange: Optional[str] = None
@@ -175,6 +178,7 @@ class RealityBridgeEngine:
         world_date: str = "2026-09-29",
         tick: int = 0,
         state_file: Optional[Path] = None,
+        universe: Optional[RealCompanyUniverse] = None,
     ):
 
         DATA_DIR.mkdir(
@@ -183,6 +187,7 @@ class RealityBridgeEngine:
         )
 
         self.state_file = state_file or STATE_FILE
+        self.universe = universe or RealCompanyUniverse()
 
         self.state = RealityBridgeState(
             world_date=world_date,
@@ -216,11 +221,26 @@ class RealityBridgeEngine:
         virtual_company_name: str,
         real_company_id: str,
         real_company_name: str,
+        listing_id: Optional[str] = None,
         ticker: Optional[str] = None,
         exchange: Optional[str] = None,
         country: Optional[str] = None,
         sector: Optional[str] = None,
     ) -> RealCompanyMapping:
+
+        # ------------------------------------------------------
+        # A identidade real deve apontar, quando disponível,
+        # para o universo canónico de empresas/listagens.
+        # ------------------------------------------------------
+        if self.universe.get_company(real_company_id) is not None:
+            if listing_id is not None:
+                listing = self.universe.get_listing(listing_id)
+                if listing is None or listing.real_company_id != real_company_id:
+                    raise ValueError("listing_id não pertence à empresa real indicada.")
+            else:
+                primary = self.universe.get_primary_listing(real_company_id)
+                if primary is not None:
+                    listing_id = primary.listing_id
 
         # ------------------------------------------------------
         # Não permitir duas associações ativas para a mesma
@@ -242,6 +262,7 @@ class RealityBridgeEngine:
             virtual_company_name=virtual_company_name,
             real_company_id=real_company_id,
             real_company_name=real_company_name,
+            listing_id=listing_id,
             ticker=ticker,
             exchange=exchange,
             country=country,
@@ -282,6 +303,28 @@ class RealityBridgeEngine:
                 return mapping
 
         return None
+
+    def get_mapping_by_listing(
+        self,
+        listing_id: str,
+    ) -> Optional[RealCompanyMapping]:
+        for mapping in self.state.mappings.values():
+            if mapping.active and mapping.listing_id == listing_id:
+                return mapping
+        return None
+
+    def validate_real_identity(
+        self,
+        real_company_id: str,
+        listing_id: Optional[str] = None,
+    ) -> bool:
+        company = self.universe.get_company(real_company_id)
+        if company is None:
+            return False
+        if listing_id is None:
+            return True
+        listing = self.universe.get_listing(listing_id)
+        return listing is not None and listing.real_company_id == real_company_id
 
     def get_mapping_by_real_company(
         self,
@@ -684,7 +727,7 @@ class RealityBridgeEngine:
 
             mappings={
                 key:
-                    RealCompanyMapping(**value)
+                    RealCompanyMapping(**{**value, "listing_id": value.get("listing_id")})
 
                 for key, value
                 in data.get(
