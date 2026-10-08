@@ -155,6 +155,14 @@ class RealCompanyUniverse:
     def get_listing(self, listing_id: str) -> Optional[Listing]:
         return self.listings.get(listing_id)
 
+    def get_company_by_source_identity(self, source_identity: str) -> Optional[RealCompany]:
+        if not source_identity:
+            return None
+        for company in self.companies.values():
+            if company.source_identity == source_identity:
+                return company
+        return None
+
     def get_company_by_ticker(
         self,
         ticker: str,
