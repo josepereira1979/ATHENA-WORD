@@ -461,6 +461,16 @@ class FamilyEngine:
         self.save()
         return True
 
+    def get_unassigned_families(self) -> List[Family]:
+        return [family for family in self.families.values() if family.alive and family.virtual_company_id is None]
+
+    def set_intelligence_specialization(self, family_id: str, specialization: str) -> bool:
+        family = self.get_family(family_id)
+        if family is None or not specialization:
+            return False
+        family.intelligence_specialization = specialization.upper()
+        self.save()
+        return True
     def get_family_by_company(
         self,
         virtual_company_id: str,
