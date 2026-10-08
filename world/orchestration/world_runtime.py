@@ -565,6 +565,18 @@ class WorldRuntime:
         ):
             raise ValueError("Não foi possível atribuir a empresa à família.")
 
+        from world.reality_bridge.exchange_registry import classify_exchange
+        profile = classify_exchange(listing.exchange)
+        family_engine.set_market_identity(
+            family.family_id,
+            region=profile.region,
+            country=listing.country or real_company.country,
+            exchange=listing.exchange,
+            market_group=profile.group,
+            listing_id=listing.listing_id,
+            world_date=now,
+        )
+
         return {
             "family_id": family.family_id,
             "virtual_company_id": company.company_id,
