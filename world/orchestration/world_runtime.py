@@ -125,6 +125,8 @@ class WorldRuntime:
         )
         self._update_family_intelligence(world_date)
         self._update_collective_intelligence(world_date)
+        self._create_family_predictions(world_date)
+        self._update_family_reputation()
 
     def _build_observations(self, world_date: str, tick: int) -> list[dict]:
         observations: list[dict] = []
@@ -336,6 +338,55 @@ class WorldRuntime:
         learning._refresh_aggregates()
         learning.save()
 
+    def _create_family_predictions(self, world_date: str) -> None:
+        family_engine = self.engines["FAMILY"]
+        company_engine = self.engines["COMPANY"]
+        prediction_engine = self.prediction_engine
+        companies = {x.company_id: x for x in company_engine.get_all_companies() if x.status == "ACTIVE"}
+        existing = {(x.owner_id, x.subject_id, x.metric) for x in prediction_engine.get_open_predictions() if x.owner_type == "FAMILY"}
+        for family in family_engine.get_all_families():
+            if not family.alive or not family.virtual_company_id:
+                continue
+            company = companies.get(family.virtual_company_id)
+            if company is None:
+                continue
+            related = []
+            for relation_type, ids in (("SUPPLIER", company.supplier_ids), ("CUSTOMER", company.customer_ids), ("COMPETITOR", company.competitor_ids)):
+                for related_id in ids:
+                    related_company = companies.get(related_id)
+                    if related_company is not None:
+                        related.append((relation_type, related_company))
+            if not related or not all(x[1].growth_rate > 0 for x in related):
+                continue
+            key = (family.family_id, company.company_id, "GROWTH_RATE")
+            if key in existing:
+                continue
+            prediction_engine.create_prediction(
+                owner_id=family.family_id, owner_type="FAMILY", subject_id=company.company_id, subject_type="COMPANY",
+                metric="GROWTH_RATE",
+                statement=f"A família {family.family_name} prevê crescimento positivo em {company.company_name} no próximo período.",
+                horizon_start=world_date, horizon_end=world_date, confidence=min(0.90, 0.55 + 0.05 * len(related)),
+                predicted_direction="UP",
+                supporting_evidence=[f"{r}:{x.company_id}" for r, x in related],
+                invalidation_condition="Crescimento da empresa não positivo no período.",
+            )
+            family.intelligence_specialization = company.sector or "GENERAL"
+            existing.add(key)
+        family_engine.save()
+
+    def _update_family_reputation(self) -> None:
+        family_engine = self.engines["FAMILY"]
+        for family in family_engine.get_all_families():
+            if not family.alive:
+                continue
+            rows = self.prediction_engine.get_predictions_by_owner(family.family_id, owner_type="FAMILY")
+            validated = [x for x in rows if x.status == "VALIDATED" and x.outcome in {"CORRECT", "WRONG", "PARTIAL"}]
+            family.predictions_count = len(rows)
+            family.predictions_correct = sum(1 for x in validated if x.outcome == "CORRECT")
+            family.predictions_wrong = sum(1 for x in validated if x.outcome == "WRONG")
+            if validated:
+                family.intelligence_score = round(sum(1.0 if x.outcome == "CORRECT" else 0.5 if x.outcome == "PARTIAL" else 0.0 for x in validated) / len(validated), 6)
+        family_engine.save()
     def assign_family_to_real_company(
         self,
         family_id: str,
