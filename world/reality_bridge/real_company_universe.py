@@ -41,6 +41,7 @@ class RealCompany:
     source_cik: Optional[str] = None
     region: Optional[str] = None
     exchange_group: Optional[str] = None
+    source_identity: Optional[str] = None
 
 
 class RealCompanyUniverse:
@@ -74,12 +75,17 @@ class RealCompanyUniverse:
         source_cik: Optional[str] = None,
         region: Optional[str] = None,
         exchange_group: Optional[str] = None,
+        source_identity: Optional[str] = None,
     ) -> RealCompany:
         if not legal_name:
             raise ValueError("legal_name não pode estar vazio.")
 
         if real_company_id and real_company_id in self.companies:
             raise ValueError("real_company_id já existe.")
+        if source_identity:
+            for existing in self.companies.values():
+                if existing.source_identity == source_identity:
+                    raise ValueError("source_identity já existe.")
 
         company = RealCompany(
             real_company_id=real_company_id or self._new_id(),
@@ -89,6 +95,7 @@ class RealCompanyUniverse:
             industry=industry,
             region=region,
             exchange_group=exchange_group,
+            source_identity=source_identity,
         )
         self.companies[company.real_company_id] = company
         self.save()
@@ -206,7 +213,7 @@ class RealCompanyUniverse:
         with self.state_file.open("r", encoding="utf-8") as file:
             payload = json.load(file)
         self.companies = {
-            item["real_company_id"]: RealCompany(**{**item, "region": item.get("region"), "exchange_group": item.get("exchange_group")})
+            item["real_company_id"]: RealCompany(**{**item, "region": item.get("region"), "exchange_group": item.get("exchange_group"), "source_identity": item.get("source_identity")})
             for item in payload.get("companies", [])
         }
         self.listings = {
