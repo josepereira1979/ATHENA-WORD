@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import date, timedelta
 from pathlib import Path
 from typing import Any, Dict
 
@@ -30,6 +31,7 @@ from world.intelligence.global_family_market_allocator import GlobalFamilyMarket
 from world.intelligence.global_market_census import GlobalMarketCensus
 from world.intelligence.global_world_population import GlobalWorldPopulationEngine
 from world.intelligence.world_control_center import WorldControlCenter
+from world.intelligence.corporate_network_intelligence import CorporateNetworkIntelligence
 
 
 class WorldRuntime:
@@ -78,6 +80,7 @@ class WorldRuntime:
             state_file=sf("corporate_network_state.json"),
             universe=self.engines["REALITY_BRIDGE"].universe,
         )
+        self.corporate_network_engine = self.corporate_network
         self.network_propagation = NetworkPropagationEngine(
             self.corporate_network,
             state_file=sf("network_propagation_state.json"),
@@ -89,6 +92,7 @@ class WorldRuntime:
         self._global_market_census = GlobalMarketCensus(self)
         self.global_world_population = GlobalWorldPopulationEngine(self)
         self.control_center = WorldControlCenter(self)
+        self.corporate_network_intelligence = CorporateNetworkIntelligence(self.corporate_network, self.engines['FAMILY'], self.engines['LEARNING'])
         self.family_company_expansion = FamilyCompanyExpansion(
             family_engine=self.engines["FAMILY"],
             company_engine=self.engines["COMPANY"],
@@ -131,6 +135,10 @@ class WorldRuntime:
             "REAL_NETWORK_INTELLIGENCE",
             self._process_real_network_intelligence,
         )
+        self.orchestrator.register_processor(
+            "CORPORATE_NETWORK_INTELLIGENCE",
+            self._process_corporate_network_intelligence,
+        )
 
     def _process_intelligence_cycle(self, world_date: str) -> None:
         tick = int(self.world_core.state["tick"])
@@ -168,6 +176,9 @@ class WorldRuntime:
         self._update_collective_intelligence(world_date)
         self._create_family_predictions(world_date)
         self._update_family_reputation()
+
+    def _process_corporate_network_intelligence(self, world_date: str) -> None:
+        self.corporate_network_intelligence.process(world_date)
 
     def _process_real_network_intelligence(self, world_date: str) -> None:
         """Executa choques reais previamente colocados na fila de propagação."""
@@ -490,7 +501,7 @@ class WorldRuntime:
                 owner_id=family.family_id, owner_type="FAMILY", subject_id=company.company_id, subject_type="COMPANY",
                 metric="GROWTH_RATE",
                 statement=f"A família {family.family_name} prevê crescimento positivo em {company.company_name} no próximo período.",
-                horizon_start=world_date, horizon_end=world_date, confidence=min(0.90, 0.55 + 0.05 * len(related)),
+                horizon_start=(date.fromisoformat(world_date) + timedelta(days=1)).isoformat(), horizon_end=(date.fromisoformat(world_date) + timedelta(days=1)).isoformat(), confidence=min(0.90, 0.55 + 0.05 * len(related)),
                 predicted_direction="UP",
                 supporting_evidence=[f"{r}:{x.company_id}" for r, x in related],
                 invalidation_condition="Crescimento da empresa não positivo no período.",
