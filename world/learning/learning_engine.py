@@ -441,6 +441,53 @@ class LearningEngine:
                 success=experience.success,
             )
 
+    def learn_from_prediction(
+        self,
+        prediction,
+        world_date: Optional[str] = None,
+    ) -> Optional[Experience]:
+        """Converte uma previsão validada numa experiência de aprendizagem."""
+        self._require_state()
+        if prediction is None or prediction.status != "VALIDATED":
+            return None
+        if prediction.outcome not in {"CORRECT", "WRONG", "PARTIAL"}:
+            return None
+
+        learning_value = {
+            "CORRECT": 0.10,
+            "PARTIAL": 0.08,
+            "WRONG": 0.12,
+        }[prediction.outcome]
+
+        impact = {
+            "CORRECT": 0.50,
+            "PARTIAL": 0.20,
+            "WRONG": -0.50,
+        }[prediction.outcome]
+
+        success = prediction.outcome == "CORRECT"
+        date_value = world_date or prediction.actual_date or prediction.horizon_end
+        lesson = {
+            "CORRECT": "A hipótese e a previsão mostraram capacidade preditiva.",
+            "PARTIAL": "A direção ou magnitude aproximou-se da realidade, mas a previsão precisa de calibração.",
+            "WRONG": "A previsão falhou; o erro deve alimentar a aprendizagem e revisão da hipótese.",
+        }[prediction.outcome]
+
+        return self.record_experience(
+            owner_id=prediction.owner_id,
+            owner_type=prediction.owner_type,
+            world_date=date_value,
+            event_type="PREDICTION_VALIDATION",
+            description=prediction.statement,
+            outcome=prediction.outcome,
+            success=success,
+            impact=impact,
+            learning_value=learning_value,
+            knowledge_domain=prediction.metric,
+            strategy="",
+            lesson=lesson,
+        )
+
     # ========================================================
     # ESTRATÉGIAS
     # ========================================================
