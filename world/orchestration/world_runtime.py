@@ -373,6 +373,7 @@ class WorldRuntime:
         }
 
     def _build_observations(self, world_date: str, tick: int) -> list[dict]:
+        observer = self.engines["OBSERVER"]
         observations: list[dict] = []
 
         economy = self.engines["ECONOMY"].get_state()
