@@ -193,6 +193,46 @@ class WorldRuntime:
 
         return observations
 
+    def _update_family_intelligence(self, world_date: str) -> None:
+        family_engine = self.engines["FAMILY"]
+        company_engine = self.engines["COMPANY"]
+        learning = self.engines["LEARNING"]
+
+        for family in family_engine.get_all_families():
+            if not family.alive or not family.virtual_company_id:
+                continue
+            company = company_engine.get_company(family.virtual_company_id)
+            if company is None:
+                continue
+
+            metrics = {
+                "REVENUE": float(company.revenue),
+                "PROFIT": float(company.profit),
+                "CASH": float(company.cash),
+                "DEBT": float(company.debt),
+                "PRODUCTIVITY": float(company.productivity),
+                "REPUTATION": float(company.reputation),
+                "GROWTH_RATE": float(company.growth_rate),
+            }
+
+            for metric, value in metrics.items():
+                learning.record_experience(
+                    owner_id=family.family_id,
+                    owner_type="FAMILY",
+                    world_date=world_date,
+                    event_type="COMPANY_INTELLIGENCE",
+                    description=f"{company.company_id} {metric}={value:.6f}",
+                    outcome="OBSERVED",
+                    success=True,
+                    impact=0.0,
+                    learning_value=0.02,
+                    knowledge_domain="FINANCE",
+                    lesson=f"Acompanhar {metric} da empresa {company.company_name}.",
+                )
+
+        learning._refresh_aggregates()
+        learning.save()
+
     def run_cycle(self) -> Dict[str, Any]:
         return self.orchestrator.run_cycle()
 
