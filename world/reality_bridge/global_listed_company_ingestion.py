@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, Iterable
 
-from world.reality_bridge.exchange_registry import classify_exchange
+from world.reality_bridge.exchange_registry import classify_exchange, market_source, normalize_exchange
 
 
 class GlobalListedCompanyIngestion:
@@ -28,12 +28,54 @@ class GlobalListedCompanyIngestion:
         blocked = ("ETF", "ETN", "FUND", "TRUST", "MUTUAL", "INDEX FUND", "SPAC")
         return not any(token in text for token in blocked)
 
+    @staticmethod
+    def normalize_record(record: Dict[str, Any]) -> Dict[str, Any]:
+        exchange = normalize_exchange(str(record.get("exchange", "")))
+        profile = classify_exchange(exchange)
+        source = market_source(exchange)
+        row = dict(record)
+        row["exchange"] = exchange
+        row["country"] = row.get("country") or profile.country
+        row["region"] = row.get("region") or source["region"]
+        row["exchange_group"] = row.get("exchange_group") or profile.group
+        return row
+
+    def validate_record(self, record: Dict[str, Any]) -> Dict[str, Any]:
+        row = self.normalize_record(record)
+        errors = []
+        if not row.get("name") and not row.get("legal_name"):
+            errors.append("MISSING_LEGAL_NAME")
+        if not row.get("ticker"):
+            errors.append("MISSING_TICKER")
+        if not row.get("exchange"):
+            errors.append("MISSING_EXCHANGE")
+        if not self._is_operating_company(row):
+            errors.append("NON_OPERATING_INSTRUMENT")
+        profile = classify_exchange(row["exchange"])
+        if profile.region == "OTHER":
+            errors.append("UNKNOWN_EXCHANGE")
+        return {"valid": not errors, "errors": errors, "record": row}
+
+    def validate_records(self, records: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
+        valid = []
+        rejected = []
+        for record in records:
+            result = self.validate_record(record)
+            (valid if result["valid"] else rejected).append(result)
+        return {
+            "valid_count": len(valid),
+            "rejected_count": len(rejected),
+            "valid": valid,
+            "rejected": rejected,
+        }
+
     def ingest(self, records: Iterable[Dict[str, Any]]) -> Dict[str, int]:
         created_companies = 0
         created_listings = 0
         skipped = 0
 
-        for record in records:
+        for raw_record in records:
+            record = self.normalize_record(raw_record)
             if not self._is_operating_company(record):
                 skipped += 1
                 continue
