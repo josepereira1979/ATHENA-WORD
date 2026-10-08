@@ -24,6 +24,7 @@ from world.reality_bridge.real_company_universe import RealCompanyUniverse
 from world.intelligence.corporate_network_engine import CorporateNetworkEngine
 from world.intelligence.network_propagation_engine import NetworkPropagationEngine
 from world.intelligence.network_shock_processor import NetworkShockProcessor
+from world.intelligence.network_shock_queue import NetworkShockQueue
 
 
 class WorldRuntime:
@@ -74,6 +75,9 @@ class WorldRuntime:
         self.network_propagation = NetworkPropagationEngine(
             self.corporate_network,
             state_file=sf("network_propagation_state.json"),
+        )
+        self.network_shock_queue = NetworkShockQueue(
+            state_file=sf("network_shock_queue_state.json"),
         )
         self.network_shock_processor = NetworkShockProcessor(
             self.network_propagation,
@@ -150,13 +154,49 @@ class WorldRuntime:
         self._update_family_reputation()
 
     def _process_real_network_intelligence(self, world_date: str) -> None:
-        """Processa apenas sinais de rede que já foram explicitamente gerados.
+        """Executa choques reais previamente colocados na fila de propagação."""
+        for shock in self.network_shock_queue.get_pending():
+            self.network_shock_processor.process_shock(
+                origin_company_id=shock.origin_company_id,
+                direction=shock.direction,
+                strength=shock.strength,
+                world_date=world_date,
+                max_depth=shock.max_depth,
+                min_strength=shock.min_strength,
+                source_event_id=shock.source_event_id,
+                source_observation_id=shock.source_observation_id,
+            )
+            self.network_shock_queue.mark_processed(shock.shock_id)
 
-        A rede corporativa não inventa choques por si só. Eventos/observações
-        futuros podem chamar network_shock_processor.process_shock() e obter
-        propagação auditável até às famílias atribuídas.
-        """
-        self.engines["LEARNING"].process_tick(world_date)
+    def queue_real_network_shock(
+        self,
+        origin_company_id: str,
+        direction: str,
+        strength: float = 1.0,
+        world_date: str | None = None,
+        max_depth: int = 3,
+        min_strength: float = 0.10,
+        source_event_id: str | None = None,
+        source_observation_id: str | None = None,
+    ) -> Dict[str, Any]:
+        """Coloca um choque empresarial real na fila para o próximo ciclo."""
+        row = self.network_shock_queue.enqueue(
+            origin_company_id=origin_company_id,
+            direction=direction,
+            strength=strength,
+            world_date=world_date or self.world_core.state["world_date"],
+            max_depth=max_depth,
+            min_strength=min_strength,
+            source_event_id=source_event_id,
+            source_observation_id=source_observation_id,
+        )
+        return {
+            "shock_id": row.shock_id,
+            "origin_company_id": row.origin_company_id,
+            "direction": row.direction,
+            "strength": row.strength,
+            "status": row.status,
+        }
 
     def _build_observations(self, world_date: str, tick: int) -> list[dict]:
         observations: list[dict] = []
