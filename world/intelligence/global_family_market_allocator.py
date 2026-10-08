@@ -75,11 +75,48 @@ class GlobalFamilyMarketAllocator:
         }
 
     def allocate(self, limit: int | None = None) -> Dict[str, Any]:
-        result = self.runtime.expand_real_company_world(limit=limit)
+        """Atribui na mesma ordem determinística usada no agrupamento mundial."""
+        family_engine = self.runtime.engines["FAMILY"]
+        company_engine = self.runtime.engines["COMPANY"]
+
+        families = [
+            f for f in family_engine.get_all_families()
+            if f.alive and f.virtual_company_id is None
+        ]
+        candidates = self._candidates()
+        if limit is not None:
+            candidates = candidates[:max(0, int(limit))]
+
+        created = []
+        world_date = self.runtime.world_core.state["world_date"]
+
+        for family, (real_company, listing) in zip(families, candidates):
+            virtual = company_engine.create_company(
+                world_date=world_date,
+                company_name=f"{real_company.legal_name} [WORLD]",
+                sector=real_company.sector or "GENERAL",
+                country=real_company.country or listing.country or "WORLD",
+            )
+            created.append(
+                self.runtime.assign_family_to_real_company(
+                    family_id=family.family_id,
+                    virtual_company_id=virtual.company_id,
+                    real_company_id=real_company.real_company_id,
+                    listing_id=listing.listing_id,
+                    world_date=world_date,
+                )
+            )
+
         return {
             "engine": self.ENGINE_NAME,
             "version": self.ENGINE_VERSION,
-            **result,
+            "created_assignments": len(created),
+            "assignments": created,
+            "families_remaining": len([
+                f for f in family_engine.get_all_families()
+                if f.alive and f.virtual_company_id is None
+            ]),
+            "companies_available_after": len(self._candidates()),
             "market_report": self.report(),
         }
 
