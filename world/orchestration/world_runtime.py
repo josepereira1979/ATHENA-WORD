@@ -68,11 +68,120 @@ class WorldRuntime:
         )
 
         self.orchestrator = WorldOrchestrator(self.world_core)
-        self.orchestrator.register_engines({
-            name: engine
-            for name, engine in self.engines.items()
-            if callable(getattr(engine, "process_tick", None))
-        })
+
+        # Ordem causal: realidade -> economia/recursos -> empresas/mercados
+        # -> agentes/famílias -> observação -> validação -> aprendizagem.
+        runtime_engines = {
+            "REALITY_BRIDGE": self.engines["REALITY_BRIDGE"],
+            "ECONOMY": self.engines["ECONOMY"],
+            "RESOURCE": self.engines["RESOURCE"],
+            "INFRASTRUCTURE": self.engines["INFRASTRUCTURE"],
+            "EVENT": self.engines["EVENT"],
+            "COMPANY": self.engines["COMPANY"],
+            "MARKET": self.engines["MARKET"],
+            "FINANCIAL": self.engines["FINANCIAL"],
+            "AGENT": self.engines["AGENT"],
+            "FAMILY": self.engines["FAMILY"],
+        }
+        self.orchestrator.register_engines(runtime_engines)
+        self.orchestrator.register_processor(
+            "INTELLIGENCE",
+            self._process_intelligence_cycle,
+        )
+
+    def _process_intelligence_cycle(self, world_date: str) -> None:
+        tick = int(self.world_core.state["tick"])
+        observer = self.engines["OBSERVER"]
+        observer.process_tick(world_date, tick)
+
+        observations = self._build_observations(world_date, tick)
+        if observations:
+            created = observer.ingest_batch(
+                observations,
+                world_date=world_date,
+                tick=tick,
+            )
+            for observation in created:
+                self.prediction_engine.validate_from_observation(
+                    self.prediction_engine.get_open_predictions(),
+                    observation,
+                )
+
+        learning = self.engines["LEARNING"]
+        learning.process_tick(world_date)
+        learning.learn_from_validated_predictions(
+            self.prediction_engine.get_all_predictions(),
+            world_date=world_date,
+        )
+
+    def _build_observations(self, world_date: str, tick: int) -> list[dict]:
+        observations: list[dict] = []
+
+        economy = self.engines["ECONOMY"].get_state()
+        if economy is not None:
+            observations.extend([
+                {
+                    "source_engine": "ECONOMY",
+                    "subject_id": "WORLD-ECONOMY",
+                    "subject_type": "ECONOMY",
+                    "metric": "REAL_GDP",
+                    "value": float(economy.real_gdp),
+                    "previous_value": float(economy.previous_real_gdp),
+                },
+                {
+                    "source_engine": "ECONOMY",
+                    "subject_id": "WORLD-ECONOMY",
+                    "subject_type": "ECONOMY",
+                    "metric": "INFLATION_RATE",
+                    "value": float(economy.inflation_rate),
+                    "previous_value": float(economy.previous_price_index),
+                },
+            ])
+
+        for asset in self.engines["MARKET"].get_all_assets():
+            if asset.active:
+                observations.append({
+                    "source_engine": "MARKET",
+                    "subject_id": asset.asset_id,
+                    "subject_type": "ASSET",
+                    "metric": "PRICE",
+                    "value": float(asset.last_price),
+                    "previous_value": float(asset.previous_price),
+                })
+
+        for resource in self.engines["RESOURCE"].get_all_resources():
+            if resource.active:
+                observations.append({
+                    "source_engine": "RESOURCE",
+                    "subject_id": resource.resource_id,
+                    "subject_type": "RESOURCE",
+                    "metric": "PRICE",
+                    "value": float(resource.price),
+                    "previous_value": float(resource.base_price),
+                })
+
+        for company in self.engines["COMPANY"].companies.values():
+            if company.status == "ACTIVE":
+                observations.extend([
+                    {
+                        "source_engine": "COMPANY",
+                        "subject_id": company.company_id,
+                        "subject_type": "COMPANY",
+                        "metric": "REVENUE",
+                        "value": float(company.revenue),
+                        "previous_value": None,
+                    },
+                    {
+                        "source_engine": "COMPANY",
+                        "subject_id": company.company_id,
+                        "subject_type": "COMPANY",
+                        "metric": "PROFIT",
+                        "value": float(company.profit),
+                        "previous_value": None,
+                    },
+                ])
+
+        return observations
 
     def run_cycle(self) -> Dict[str, Any]:
         return self.orchestrator.run_cycle()
