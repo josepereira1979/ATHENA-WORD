@@ -81,6 +81,11 @@ class Family:
     predictions_count: int = 0
     predictions_correct: int = 0
     predictions_wrong: int = 0
+    market_region: Optional[str] = None
+    market_country: Optional[str] = None
+    market_exchange: Optional[str] = None
+    market_group: Optional[str] = None
+    market_listing_id: Optional[str] = None
 
 
 # ============================================================
@@ -791,6 +796,11 @@ class FamilyEngine:
                 data.setdefault("predictions_count", 0)
                 data.setdefault("predictions_correct", 0)
                 data.setdefault("predictions_wrong", 0)
+                data.setdefault("market_region", None)
+                data.setdefault("market_country", None)
+                data.setdefault("market_exchange", None)
+                data.setdefault("market_group", None)
+                data.setdefault("market_listing_id", None)
 
                 family = Family(
                     **data
