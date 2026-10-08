@@ -51,6 +51,7 @@ class WorldControlCenter:
                 "readiness": readiness,
             },
             "network": network_counts,
+            "real_world_sources": self.runtime.real_world_sources.list_sources(),
             "intelligence": {
                 "predictions": len(predictions),
                 "open_predictions": sum(1 for p in predictions if p.status == "OPEN"),
