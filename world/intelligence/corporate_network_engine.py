@@ -105,8 +105,31 @@ class CorporateNetworkEngine:
                                                "relationships": [asdict(x) for x in self.relationships.values()]},
                                               indent=2, ensure_ascii=False), encoding="utf-8")
 
+    def _bootstrap_documented_relationships(self):
+        if self.relationships:
+            return
+        seed = [
+            ("REAL-000021", "REAL-000001", "SUPPLIES", 0.99, "NVIDIA FY2025 Annual Report",
+             "NVIDIA states that it utilizes TSMC to produce semiconductor wafers."),
+            ("REAL-000022", "REAL-000001", "SUPPLIES", 0.99, "NVIDIA FY2025 Annual Report",
+             "NVIDIA states that it utilizes Samsung to produce semiconductor wafers."),
+            ("REAL-000006", "REAL-000001", "COMPETES_WITH", 0.97, "NVIDIA FY2025 Annual Report",
+             "NVIDIA identifies Broadcom among competitors in SoC and networking products."),
+            ("REAL-000021", "REAL-000002", "SUPPLIES", 0.92, "TSMC 2025 Annual Report",
+             "TSMC identifies Apple among its customers.")
+        ]
+        for source, target, relation_type, confidence, document, evidence in seed:
+            if self._validate_company(source) and self._validate_company(target):
+                relationship_id = self._make_id(source, target, relation_type)
+                now = self._now()
+                self.relationships[relationship_id] = CorporateRelationship(
+                    relationship_id, source, target, relation_type, "CONFIRMED", confidence,
+                    document, "", evidence, "2025-01-01", None, True, now, now
+                )
+
     def load(self):
         if not self.state_file.exists():
+            self._bootstrap_documented_relationships()
             self.save()
             return
         data = json.loads(self.state_file.read_text(encoding="utf-8"))
