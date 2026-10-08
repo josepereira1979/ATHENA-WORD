@@ -476,6 +476,22 @@ class WorldRuntime:
             "status": "ASSIGNED",
         }
 
+    def prepare_real_company_assignments(self) -> Dict[str, Any]:
+        """Lista famílias livres e empresas reais válidas para futura distribuição."""
+        family_engine = self.engines["FAMILY"]
+        universe = self.engines["REALITY_BRIDGE"].universe
+        families = family_engine.get_unassigned_families()
+        companies = [x for x in universe.get_all_companies() if x.active and universe.get_primary_listing(x.real_company_id)]
+        return {
+            "families_available": len(families),
+            "real_companies_available": len(companies),
+            "families": [x.family_id for x in families],
+            "real_companies": [
+                {"real_company_id": x.real_company_id, "legal_name": x.legal_name, "sector": x.sector, "country": x.country}
+                for x in companies
+            ],
+            "status": "READY_FOR_ASSIGNMENT",
+        }
     def run_cycle(self) -> Dict[str, Any]:
         return self.orchestrator.run_cycle()
 
