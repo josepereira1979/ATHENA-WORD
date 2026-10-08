@@ -102,6 +102,17 @@ class GlobalWorldFinalizer:
                 world_date=world_date,
             )
 
+            if not family.member_ids:
+                for _ in range(2):
+                    agent = agent_engine.create_agent(
+                        world_date=world_date,
+                        profession=f"Investigador de {company.sector or 'mercado'}",
+                        family_id=family.family_id,
+                        generation=family.generation,
+                    )
+                    family_engine.add_member(family.family_id, agent.agent_id, world_date)
+                    created_agents.append(agent.agent_id)
+
             for agent_id in family.member_ids:
                 agent = agent_engine.agents.get(agent_id)
                 if agent is not None and agent.primary_company_id is None:
@@ -116,13 +127,14 @@ class GlobalWorldFinalizer:
         company_engine.save()
 
         eligible_ids = {company.real_company_id for company in companies}
-        final_assigned = self._assigned_real_ids()
-        orphaned = sorted(eligible_ids - final_assigned)
-        duplicate_count = len(final_assigned) - len({
+        assigned_ids = [
             family.real_company_id
             for family in family_engine.get_all_families()
             if family.alive and family.real_company_id
-        })
+        ]
+        final_assigned = set(assigned_ids)
+        orphaned = sorted(eligible_ids - final_assigned)
+        duplicate_count = len(assigned_ids) - len(final_assigned)
 
         return {
             "engine": self.ENGINE_NAME,
