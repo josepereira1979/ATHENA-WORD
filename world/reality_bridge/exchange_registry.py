@@ -95,3 +95,44 @@ def market_counts(companies: Iterable[object], listings_by_company: Dict[str, ob
         for region, groups in grouped.items()
         for group, items in groups.items()
     }
+
+
+
+MARKET_SOURCE_REGISTRY = {
+    "NASDAQ": {"region": "AMERICAS", "country": "US", "source_type": "EXCHANGE"},
+    "NYSE": {"region": "AMERICAS", "country": "US", "source_type": "EXCHANGE"},
+    "TSX": {"region": "AMERICAS", "country": "CA", "source_type": "EXCHANGE"},
+    "BMV": {"region": "AMERICAS", "country": "MX", "source_type": "EXCHANGE"},
+    "B3": {"region": "AMERICAS", "country": "BR", "source_type": "EXCHANGE"},
+    "LSE": {"region": "EUROPE", "country": "GB", "source_type": "EXCHANGE"},
+    "EURONEXT": {"region": "EUROPE", "country": "EU", "source_type": "EXCHANGE"},
+    "XETRA": {"region": "EUROPE", "country": "DE", "source_type": "EXCHANGE"},
+    "BME": {"region": "EUROPE", "country": "ES", "source_type": "EXCHANGE"},
+    "MILAN": {"region": "EUROPE", "country": "IT", "source_type": "EXCHANGE"},
+    "SIX": {"region": "EUROPE", "country": "CH", "source_type": "EXCHANGE"},
+    "OMX": {"region": "EUROPE", "country": "EU", "source_type": "EXCHANGE"},
+    "NSE": {"region": "ASIA_PACIFIC", "country": "IN", "source_type": "EXCHANGE"},
+    "BSE": {"region": "ASIA_PACIFIC", "country": "IN", "source_type": "EXCHANGE"},
+    "TSE": {"region": "ASIA_PACIFIC", "country": "JP", "source_type": "EXCHANGE"},
+    "SSE": {"region": "ASIA_PACIFIC", "country": "CN", "source_type": "EXCHANGE"},
+    "SZSE": {"region": "ASIA_PACIFIC", "country": "CN", "source_type": "EXCHANGE"},
+    "HKEX": {"region": "ASIA_PACIFIC", "country": "HK", "source_type": "EXCHANGE"},
+    "KRX": {"region": "ASIA_PACIFIC", "country": "KR", "source_type": "EXCHANGE"},
+    "TWSE": {"region": "ASIA_PACIFIC", "country": "TW", "source_type": "EXCHANGE"},
+    "SGX": {"region": "ASIA_PACIFIC", "country": "SG", "source_type": "EXCHANGE"},
+    "JSE": {"region": "AFRICA", "country": "ZA", "source_type": "EXCHANGE"},
+    "TADAWUL": {"region": "MIDDLE_EAST", "country": "SA", "source_type": "EXCHANGE"},
+    "ADX": {"region": "MIDDLE_EAST", "country": "AE", "source_type": "EXCHANGE"},
+    "DFM": {"region": "MIDDLE_EAST", "country": "AE", "source_type": "EXCHANGE"},
+    "QSE": {"region": "MIDDLE_EAST", "country": "QA", "source_type": "EXCHANGE"},
+    "ASX": {"region": "ASIA_PACIFIC", "country": "AU", "source_type": "EXCHANGE"},
+    "NZSX": {"region": "ASIA_PACIFIC", "country": "NZ", "source_type": "EXCHANGE"},
+}
+
+
+def market_source(exchange: str) -> Dict[str, str]:
+    return MARKET_SOURCE_REGISTRY.get(normalize_exchange(exchange), {
+        "region": "OTHER",
+        "country": "UNKNOWN",
+        "source_type": "UNKNOWN",
+    })
