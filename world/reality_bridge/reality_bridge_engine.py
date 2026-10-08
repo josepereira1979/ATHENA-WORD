@@ -179,6 +179,7 @@ class RealityBridgeEngine:
         tick: int = 0,
         state_file: Optional[Path] = None,
         universe: Optional[RealCompanyUniverse] = None,
+        auto_load: bool = True,
     ):
 
         DATA_DIR.mkdir(
@@ -193,6 +194,8 @@ class RealityBridgeEngine:
             world_date=world_date,
             tick=tick,
         )
+        if auto_load:
+            self.load()
 
     # ==========================================================
     # INITIALIZATION
