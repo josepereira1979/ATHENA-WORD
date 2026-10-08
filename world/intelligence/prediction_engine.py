@@ -170,10 +170,23 @@ class PredictionEngine:
             raise ValueError("A observação não pertence ao sujeito da previsão.")
         if observation.metric != prediction.metric:
             raise ValueError("A observação não corresponde à métrica da previsão.")
+        outcome = None
+        if prediction.predicted_direction and observation.previous_value is not None:
+            previous = float(observation.previous_value)
+            actual = float(observation.value)
+            if actual > previous:
+                actual_direction = "UP"
+            elif actual < previous:
+                actual_direction = "DOWN"
+            else:
+                actual_direction = "FLAT"
+            expected_direction = prediction.predicted_direction.upper()
+            outcome = "CORRECT" if actual_direction == expected_direction else "WRONG"
         return self.validate_prediction(
             prediction_id=prediction_id,
             actual_value=observation.value,
             actual_date=observation.world_date,
+            outcome=outcome,
         )
 
     def add_evidence(
