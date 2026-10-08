@@ -233,6 +233,107 @@ class WorldRuntime:
         learning._refresh_aggregates()
         learning.save()
 
+    def _update_collective_intelligence(self, world_date: str) -> None:
+        """Transforma relações empresariais em evidência partilhável pelas famílias."""
+        family_engine = self.engines["FAMILY"]
+        company_engine = self.engines["COMPANY"]
+        learning = self.engines["LEARNING"]
+        observer = self.engines["OBSERVER"]
+
+        companies = company_engine.get_all_companies()
+        by_id = {company.company_id: company for company in companies}
+        existing = {
+            hypothesis.statement
+            for hypothesis in observer.get_all_hypotheses()
+        }
+
+        for family in family_engine.get_all_families():
+            if not family.alive or not family.virtual_company_id:
+                continue
+
+            company = by_id.get(family.virtual_company_id)
+            if company is None:
+                continue
+
+            related = []
+            for relation_type, ids in (
+                ("SUPPLIER", company.supplier_ids),
+                ("CUSTOMER", company.customer_ids),
+                ("COMPETITOR", company.competitor_ids),
+            ):
+                for related_id in ids:
+                    related_company = by_id.get(related_id)
+                    if related_company is None:
+                        continue
+                    related.append((relation_type, related_company))
+
+                    learning.record_experience(
+                        owner_id=family.family_id,
+                        owner_type="FAMILY",
+                        world_date=world_date,
+                        event_type="NETWORK_SIGNAL",
+                        description=(
+                            f"{relation_type}: {related_company.company_id} "
+                            f"-> {company.company_id}; "
+                            f"profit={related_company.profit:.6f}; "
+                            f"growth={related_company.growth_rate:.6f}"
+                        ),
+                        outcome="OBSERVED",
+                        success=True,
+                        impact=0.0,
+                        learning_value=0.04,
+                        knowledge_domain="NETWORK",
+                        lesson=(
+                            "A evolução de uma empresa relacionada pode "
+                            "antecipar ou contrariar a empresa atribuída."
+                        ),
+                    )
+
+            if not related:
+                continue
+
+            positive = [
+                item for item in related
+                if item[1].growth_rate > 0
+            ]
+            if len(positive) < len(related):
+                continue
+
+            statement = (
+                f"As empresas relacionadas com {company.company_name} "
+                f"podem estar a sinalizar pressão positiva sobre o seu crescimento."
+            )
+            if statement in existing:
+                continue
+
+            hypothesis = observer.create_hypothesis(
+                statement=statement,
+                confidence=min(0.90, 0.50 + 0.05 * len(positive)),
+                world_date=world_date,
+                tick=int(self.world_core.state["tick"]),
+            )
+
+            learning.record_experience(
+                owner_id=family.family_id,
+                owner_type="FAMILY",
+                world_date=world_date,
+                event_type="COLLECTIVE_HYPOTHESIS",
+                description=hypothesis.statement,
+                outcome="OPEN",
+                success=True,
+                impact=hypothesis.confidence,
+                learning_value=0.06,
+                knowledge_domain="INTELLIGENCE",
+                lesson=(
+                    "Uma hipótese foi construída a partir de sinais "
+                    "de empresas relacionadas."
+                ),
+            )
+            existing.add(statement)
+
+        learning._refresh_aggregates()
+        learning.save()
+
     def run_cycle(self) -> Dict[str, Any]:
         return self.orchestrator.run_cycle()
 
