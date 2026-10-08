@@ -50,7 +50,8 @@ class WorldRuntime:
         self.world_core = world_core or WorldCore()
         self.state_dir = Path(state_dir) if state_dir else Path(__file__).resolve().parents[2] / "data"
 
-        def sf(name: str) -> Path:\n            return self.state_dir / name
+        def sf(name: str) -> Path:
+            return self.state_dir / name
 
         self.engines: Dict[str, Any] = {
             "AGENT": AgentEngine(state_file=sf("agents_state.json"), auto_load=auto_load),
