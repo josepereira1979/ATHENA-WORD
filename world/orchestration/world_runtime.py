@@ -101,11 +101,19 @@ class WorldRuntime:
                 world_date=world_date,
                 tick=tick,
             )
+            open_predictions = self.prediction_engine.get_open_predictions()
             for observation in created:
-                self.prediction_engine.validate_from_observation(
-                    self.prediction_engine.get_open_predictions(),
-                    observation,
-                )
+                for prediction in open_predictions:
+                    if prediction.subject_id != observation.subject_id:
+                        continue
+                    if prediction.metric != observation.metric:
+                        continue
+                    if not (prediction.horizon_start <= observation.world_date <= prediction.horizon_end):
+                        continue
+                    self.prediction_engine.validate_from_observation(
+                        prediction.prediction_id,
+                        observation,
+                    )
 
         learning = self.engines["LEARNING"]
         learning.process_tick(world_date)
@@ -134,7 +142,7 @@ class WorldRuntime:
                     "subject_type": "ECONOMY",
                     "metric": "INFLATION_RATE",
                     "value": float(economy.inflation_rate),
-                    "previous_value": float(economy.previous_price_index),
+                    "previous_value": None,
                 },
             ])
 
