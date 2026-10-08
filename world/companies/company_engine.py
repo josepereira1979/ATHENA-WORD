@@ -142,6 +142,9 @@ class Company:
 
     updated_at: str = ""
 
+    # Identidade canónica da empresa no mundo real.
+    real_company_id: Optional[str] = None
+
 
 # ============================================================
 # COMPANY ENGINE
@@ -1116,6 +1119,8 @@ class CompanyEngine:
             ):
 
                 # Compatibilidade retroactiva com estados V01.
+                data.setdefault("real_company_id", None)
+
                 data.setdefault("real_company_id", None)
 
                 company = Company(
