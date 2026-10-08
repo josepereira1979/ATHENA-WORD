@@ -122,6 +122,60 @@ class PredictionEngine:
         self.save()
         return prediction
 
+    def create_from_hypothesis(
+        self,
+        hypothesis,
+        owner_id: str,
+        owner_type: str,
+        subject_id: str,
+        subject_type: str,
+        metric: str,
+        horizon_start: str,
+        horizon_end: str,
+        predicted_value: Optional[float] = None,
+        predicted_direction: Optional[str] = None,
+        invalidation_condition: Optional[str] = None,
+    ) -> Prediction:
+        if not hypothesis:
+            raise ValueError("hypothesis é obrigatória.")
+        return self.create_prediction(
+            owner_id=owner_id,
+            owner_type=owner_type,
+            subject_id=subject_id,
+            subject_type=subject_type,
+            metric=metric,
+            statement=hypothesis.statement,
+            horizon_start=horizon_start,
+            horizon_end=horizon_end,
+            confidence=hypothesis.confidence,
+            predicted_value=predicted_value,
+            predicted_direction=predicted_direction,
+            invalidation_condition=invalidation_condition,
+            supporting_evidence=list(hypothesis.supporting_observations),
+            contradicting_evidence=list(hypothesis.contradicting_observations),
+            source_hypothesis_id=hypothesis.hypothesis_id,
+        )
+
+    def validate_from_observation(
+        self,
+        prediction_id: str,
+        observation,
+    ) -> Optional[Prediction]:
+        if observation is None:
+            return None
+        prediction = self.get_prediction(prediction_id)
+        if prediction is None:
+            return None
+        if observation.subject_id != prediction.subject_id:
+            raise ValueError("A observação não pertence ao sujeito da previsão.")
+        if observation.metric != prediction.metric:
+            raise ValueError("A observação não corresponde à métrica da previsão.")
+        return self.validate_prediction(
+            prediction_id=prediction_id,
+            actual_value=observation.value,
+            actual_date=observation.world_date,
+        )
+
     def add_evidence(
         self,
         prediction_id: str,
