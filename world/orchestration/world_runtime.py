@@ -425,6 +425,10 @@ class WorldRuntime:
                 previous_revenue = observer.get_latest_observation(company.company_id, "REVENUE")
                 previous_profit = observer.get_latest_observation(company.company_id, "PROFIT")
                 previous_growth = observer.get_latest_observation(company.company_id, "GROWTH_RATE")
+                if previous_revenue is not None and previous_revenue.value != 0:
+                    company.growth_rate = (
+                        float(company.revenue) - float(previous_revenue.value)
+                    ) / abs(float(previous_revenue.value))
                 observations.extend([
                     {
                         "source_engine": "COMPANY",
