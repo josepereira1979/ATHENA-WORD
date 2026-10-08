@@ -492,6 +492,33 @@ class WorldRuntime:
             ],
             "status": "READY_FOR_ASSIGNMENT",
         }
+    def ingest_real_relationships(self, relationships: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Ingere relações empresariais reais com proveniência e confiança."""
+        bridge = self.engines["REALITY_BRIDGE"]
+        universe = bridge.universe
+        accepted = []
+        rejected = []
+        for row in relationships:
+            source = universe.get_company(row.get("source_real_company_id", ""))
+            target = universe.get_company(row.get("target_real_company_id", ""))
+            relation_type = str(row.get("relation_type", "")).upper().strip()
+            confidence = float(row.get("confidence", 0.0))
+            if source is None or target is None or source.real_company_id == target.real_company_id:
+                rejected.append({"reason": "INVALID_COMPANIES", "relationship": row})
+                continue
+            if not relation_type or not 0.0 <= confidence <= 1.0:
+                rejected.append({"reason": "INVALID_RELATION", "relationship": row})
+                continue
+            accepted.append({
+                "source_real_company_id": source.real_company_id,
+                "target_real_company_id": target.real_company_id,
+                "relation_type": relation_type,
+                "confidence": confidence,
+                "source": row.get("source"),
+                "evidence": row.get("evidence"),
+                "active": True,
+            })
+        return {"accepted": accepted, "rejected": rejected, "accepted_count": len(accepted), "rejected_count": len(rejected)}
     def run_cycle(self) -> Dict[str, Any]:
         return self.orchestrator.run_cycle()
 
