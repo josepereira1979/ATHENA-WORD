@@ -29,6 +29,7 @@ from world.intelligence.family_company_expansion import FamilyCompanyExpansion
 from world.intelligence.global_family_market_allocator import GlobalFamilyMarketAllocator
 from world.intelligence.global_market_census import GlobalMarketCensus
 from world.intelligence.global_world_population import GlobalWorldPopulationEngine
+from world.intelligence.world_control_center import WorldControlCenter
 
 
 class WorldRuntime:
@@ -87,6 +88,7 @@ class WorldRuntime:
         self.global_family_market_allocator = GlobalFamilyMarketAllocator(self)
         self._global_market_census = GlobalMarketCensus(self)
         self.global_world_population = GlobalWorldPopulationEngine(self)
+        self.control_center = WorldControlCenter(self)
         self.family_company_expansion = FamilyCompanyExpansion(
             family_engine=self.engines["FAMILY"],
             company_engine=self.engines["COMPANY"],
@@ -182,6 +184,14 @@ class WorldRuntime:
             )
             self.network_shock_queue.mark_processed(shock.shock_id)
 
+    def world_snapshot(self) -> Dict[str, Any]:
+        return self.control_center.snapshot()
+
+    def world_integrity(self) -> Dict[str, Any]:
+        return self.control_center.integrity()
+
+    def world_full_report(self) -> Dict[str, Any]:
+        return self.control_center.full_report()
     def global_world_status(self) -> Dict[str, Any]:
         return self.global_world_population.status()
 
