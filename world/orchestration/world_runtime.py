@@ -22,6 +22,7 @@ from world.learning.learning_engine import LearningEngine
 from world.reality_bridge.reality_bridge_engine import RealityBridgeEngine
 from world.intelligence.prediction_engine import PredictionEngine
 from world.reality_bridge.real_company_universe import RealCompanyUniverse
+from world.reality_bridge.real_world_connection import RealWorldConnection
 from world.intelligence.corporate_network_engine import CorporateNetworkEngine
 from world.intelligence.network_propagation_engine import NetworkPropagationEngine
 from world.intelligence.network_shock_processor import NetworkShockProcessor
@@ -94,6 +95,7 @@ class WorldRuntime:
         self._global_market_census = GlobalMarketCensus(self)
         self.global_world_population = GlobalWorldPopulationEngine(self)
         self.global_world_finalizer = GlobalWorldFinalizer(self)
+        self.real_world_connection = RealWorldConnection(self)
         self.control_center = WorldControlCenter(self)
         self.launch_controller = WorldLaunchController(self)
         self.corporate_network_intelligence = CorporateNetworkIntelligence(self.corporate_network, self.engines['FAMILY'], self.engines['LEARNING'])
@@ -198,6 +200,9 @@ class WorldRuntime:
                 source_observation_id=shock.source_observation_id,
             )
             self.network_shock_queue.mark_processed(shock.shock_id)
+
+    def connect_real_world(self, records, allocate: bool = True) -> Dict[str, Any]:
+        return self.real_world_connection.ingest_and_finalize(records, allocate=allocate)
 
     def finalize_global_world(self) -> Dict[str, Any]:
         return self.global_world_finalizer.finalize(self.world_core.state['world_date'])
