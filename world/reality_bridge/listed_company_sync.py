@@ -99,6 +99,7 @@ class ListedCompanySync:
                 sector="UNKNOWN",
                 industry="UNKNOWN",
                 real_company_id=f"REAL-SEC-{record.cik}",
+                source_cik=record.cik,
             )
             company.source_cik = record.cik
             listing = universe.add_listing(
