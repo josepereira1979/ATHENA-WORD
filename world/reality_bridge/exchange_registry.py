@@ -31,6 +31,24 @@ EXCHANGES: Dict[str, ExchangeProfile] = {
     "ASX": ExchangeProfile("ASX", "Australian Securities Exchange", "AU", "ASIA_PACIFIC", "AUSTRALIA"),
     "TSX": ExchangeProfile("TSX", "Toronto Stock Exchange", "CA", "AMERICAS", "CANADA"),
     "B3": ExchangeProfile("B3", "B3 Brasil Bolsa Balcão", "BR", "AMERICAS", "BRAZIL"),
+    "BMV": ExchangeProfile("BMV", "Bolsa Mexicana de Valores", "MX", "AMERICAS", "MEXICO"),
+    "BME": ExchangeProfile("BME", "Bolsas y Mercados Españoles", "ES", "EUROPE", "SPAIN"),
+    "MILAN": ExchangeProfile("MILAN", "Borsa Italiana", "IT", "EUROPE", "ITALY"),
+    "OMX": ExchangeProfile("OMX", "Nasdaq Nordic", "EU", "EUROPE", "NORDICS"),
+    "OSLO": ExchangeProfile("OSLO", "Oslo Børs", "NO", "EUROPE", "NORWAY"),
+    "COPENHAGEN": ExchangeProfile("COPENHAGEN", "Nasdaq Copenhagen", "DK", "EUROPE", "DENMARK"),
+    "STOCKHOLM": ExchangeProfile("STOCKHOLM", "Nasdaq Stockholm", "SE", "EUROPE", "SWEDEN"),
+    "HELSINKI": ExchangeProfile("HELSINKI", "Nasdaq Helsinki", "FI", "EUROPE", "FINLAND"),
+    "SGX": ExchangeProfile("SGX", "Singapore Exchange", "SG", "ASIA_PACIFIC", "SINGAPORE"),
+    "JSE": ExchangeProfile("JSE", "Johannesburg Stock Exchange", "ZA", "AFRICA", "SOUTH_AFRICA"),
+    "TADAWUL": ExchangeProfile("TADAWUL", "Saudi Exchange", "SA", "MIDDLE_EAST", "SAUDI_ARABIA"),
+    "ADX": ExchangeProfile("ADX", "Abu Dhabi Securities Exchange", "AE", "MIDDLE_EAST", "UAE"),
+    "DFM": ExchangeProfile("DFM", "Dubai Financial Market", "AE", "MIDDLE_EAST", "UAE"),
+    "QSE": ExchangeProfile("QSE", "Qatar Stock Exchange", "QA", "MIDDLE_EAST", "QATAR"),
+    "IDX": ExchangeProfile("IDX", "Indonesia Stock Exchange", "ID", "ASIA_PACIFIC", "INDONESIA"),
+    "SET": ExchangeProfile("SET", "Stock Exchange of Thailand", "TH", "ASIA_PACIFIC", "THAILAND"),
+    "MYX": ExchangeProfile("MYX", "Bursa Malaysia", "MY", "ASIA_PACIFIC", "MALAYSIA"),
+    "NZSX": ExchangeProfile("NZSX", "New Zealand Exchange", "NZ", "ASIA_PACIFIC", "NEW_ZEALAND"),
 }
 
 
@@ -46,7 +64,7 @@ def normalize_exchange(exchange: str) -> str:
         "BSE INDIA": "BSE", "TOKYO": "TSE", "JPX": "TSE",
         "SHANGHAI": "SSE", "SHENZHEN": "SZSE", "HKEX": "HKEX",
         "KOREA": "KRX", "KRX": "KRX", "TAIWAN": "TWSE", "TWSE": "TWSE",
-        "ASX": "ASX", "TSX": "TSX", "TMX": "TSX", "B3": "B3",
+        "ASX": "ASX", "TSX": "TSX", "TMX": "TSX", "B3": "B3", "BMV": "BMV", "BME": "BME", "BORSA ITALIANA": "MILAN", "MILAN": "MILAN", "NASDAQ NORDIC": "OMX", "OSLO BORS": "OSLO", "OSLO BØRS": "OSLO", "COPENHAGEN": "COPENHAGEN", "STOCKHOLM": "STOCKHOLM", "HELSINKI": "HELSINKI", "SGX": "SGX", "JSE": "JSE", "TADAWUL": "TADAWUL", "SAUDI EXCHANGE": "TADAWUL", "ADX": "ADX", "DFM": "DFM", "QSE": "QSE", "IDX": "IDX", "SET": "SET", "MYX": "MYX", "BURSA MALAYSIA": "MYX", "NZSX": "NZSX",
     }
     return aliases.get(value, value)
 
