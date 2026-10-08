@@ -123,6 +123,8 @@ class WorldRuntime:
             self.prediction_engine.get_all_predictions(),
             world_date=world_date,
         )
+        self._update_family_intelligence(world_date)
+        self._update_collective_intelligence(world_date)
 
     def _build_observations(self, world_date: str, tick: int) -> list[dict]:
         observations: list[dict] = []
@@ -333,6 +335,95 @@ class WorldRuntime:
 
         learning._refresh_aggregates()
         learning.save()
+
+    def assign_family_to_real_company(
+        self,
+        family_id: str,
+        virtual_company_id: str,
+        real_company_id: str,
+        listing_id: str | None = None,
+        world_date: str | None = None,
+    ) -> Dict[str, Any]:
+        """Prepara uma atribuição família -> empresa real validada pelo Reality Bridge.
+
+        Não aceita uma identidade inventada: a empresa e a listagem têm de existir
+        no universo canónico. A ligação fica registada simultaneamente na família,
+        na empresa virtual e no Reality Bridge.
+        """
+        family_engine = self.engines["FAMILY"]
+        company_engine = self.engines["COMPANY"]
+        bridge = self.engines["REALITY_BRIDGE"]
+        universe = bridge.universe
+
+        family = family_engine.get_family(family_id)
+        company = company_engine.get_company(virtual_company_id)
+        real_company = universe.get_company(real_company_id)
+
+        if family is None or not family.alive:
+            raise ValueError("Família inexistente ou inactiva.")
+        if company is None or company.status != "ACTIVE":
+            raise ValueError("Empresa virtual inexistente ou inactiva.")
+        if real_company is None or not real_company.active:
+            raise ValueError("Empresa real inexistente ou inactiva.")
+
+        listing = universe.get_listing(listing_id) if listing_id else universe.get_primary_listing(real_company_id)
+        if listing is None or not listing.active:
+            raise ValueError("A empresa real não possui uma listagem activa.")
+        if listing.real_company_id != real_company_id:
+            raise ValueError("A listagem indicada não pertence à empresa real.")
+
+        if family.virtual_company_id not in (None, virtual_company_id):
+            raise ValueError("A família já tem outra empresa atribuída.")
+
+        existing_family = family_engine.get_family_by_company(virtual_company_id)
+        if existing_family is not None and existing_family.family_id != family_id:
+            raise ValueError("A empresa virtual já está atribuída a outra família.")
+
+        existing_real = company_engine.get_company_by_real_id(real_company_id)
+        if existing_real is not None and existing_real.company_id != virtual_company_id:
+            raise ValueError("A empresa real já está ligada a outra empresa virtual.")
+
+        existing_mapping = bridge.get_mapping_by_virtual_company(virtual_company_id)
+        if existing_mapping is not None and existing_mapping.real_company_id != real_company_id:
+            raise ValueError("A empresa virtual já possui outro mapping real.")
+
+        now = world_date or self.world_core.state["world_date"]
+
+        if existing_mapping is None:
+            bridge.create_mapping(
+                virtual_company_id=company.company_id,
+                virtual_company_name=company.company_name,
+                real_company_id=real_company.real_company_id,
+                real_company_name=real_company.legal_name,
+                listing_id=listing.listing_id,
+                ticker=listing.ticker,
+                exchange=listing.exchange,
+                country=real_company.country,
+                sector=real_company.sector,
+            )
+
+        if not company_engine.link_real_company(company.company_id, real_company.real_company_id):
+            raise ValueError("Não foi possível ligar a empresa virtual à identidade real.")
+
+        if not family_engine.link_company(
+            family.family_id,
+            company.company_id,
+            real_company.real_company_id,
+            world_date=now,
+        ):
+            raise ValueError("Não foi possível atribuir a empresa à família.")
+
+        return {
+            "family_id": family.family_id,
+            "virtual_company_id": company.company_id,
+            "real_company_id": real_company.real_company_id,
+            "real_company_name": real_company.legal_name,
+            "listing_id": listing.listing_id,
+            "ticker": listing.ticker,
+            "exchange": listing.exchange,
+            "world_date": now,
+            "status": "ASSIGNED",
+        }
 
     def run_cycle(self) -> Dict[str, Any]:
         return self.orchestrator.run_cycle()
