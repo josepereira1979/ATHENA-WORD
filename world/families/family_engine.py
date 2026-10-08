@@ -450,6 +450,29 @@ class FamilyEngine:
         self.save()
         return True
 
+    def set_market_identity(
+        self,
+        family_id: str,
+        region: Optional[str] = None,
+        country: Optional[str] = None,
+        exchange: Optional[str] = None,
+        market_group: Optional[str] = None,
+        listing_id: Optional[str] = None,
+        world_date: Optional[str] = None,
+    ) -> bool:
+        family = self.get_family(family_id)
+        if family is None:
+            return False
+        family.market_region = region
+        family.market_country = country
+        family.market_exchange = exchange
+        family.market_group = market_group
+        family.market_listing_id = listing_id
+        if world_date is not None:
+            family.last_update_world_date = world_date
+        self.save()
+        return True
+
     def unlink_company(
         self,
         family_id: str,
