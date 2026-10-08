@@ -39,6 +39,8 @@ class RealCompany:
     active: bool = True
     listing_ids: List[str] = field(default_factory=list)
     source_cik: Optional[str] = None
+    region: Optional[str] = None
+    exchange_group: Optional[str] = None
 
 
 class RealCompanyUniverse:
@@ -70,6 +72,8 @@ class RealCompanyUniverse:
         industry: Optional[str] = None,
         real_company_id: Optional[str] = None,
         source_cik: Optional[str] = None,
+        region: Optional[str] = None,
+        exchange_group: Optional[str] = None,
     ) -> RealCompany:
         if not legal_name:
             raise ValueError("legal_name não pode estar vazio.")
@@ -83,6 +87,8 @@ class RealCompanyUniverse:
             country=country,
             sector=sector,
             industry=industry,
+            region=region,
+            exchange_group=exchange_group,
         )
         self.companies[company.real_company_id] = company
         self.save()
@@ -200,7 +206,7 @@ class RealCompanyUniverse:
         with self.state_file.open("r", encoding="utf-8") as file:
             payload = json.load(file)
         self.companies = {
-            item["real_company_id"]: RealCompany(**item)
+            item["real_company_id"]: RealCompany(**{**item, "region": item.get("region"), "exchange_group": item.get("exchange_group")})
             for item in payload.get("companies", [])
         }
         self.listings = {
