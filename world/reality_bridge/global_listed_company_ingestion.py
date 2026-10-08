@@ -94,17 +94,31 @@ class GlobalListedCompanyIngestion:
                 continue
 
             profile = classify_exchange(exchange)
-            company_id = record.get("real_company_id")
-            company = self.universe.create_company(
-                legal_name=name,
-                country=country or profile.country,
-                sector=record.get("sector"),
-                industry=record.get("industry"),
-                real_company_id=company_id,
-                source_cik=record.get("source_cik"),
-                region=profile.region,
-                exchange_group=profile.group,
+            source_identity = (
+                record.get("source_identity")
+                or record.get("issuer_id")
+                or record.get("lei")
             )
+            company = (
+                self.universe.get_company_by_source_identity(str(source_identity))
+                if source_identity
+                else None
+            )
+            if company is None:
+                company_id = record.get("real_company_id")
+                company = self.universe.create_company(
+                    legal_name=name,
+                    country=country or profile.country,
+                    sector=record.get("sector"),
+                    industry=record.get("industry"),
+                    real_company_id=company_id,
+                    source_cik=record.get("source_cik"),
+                    region=profile.region,
+                    exchange_group=profile.group,
+                    source_identity=str(source_identity) if source_identity else None,
+                )
+                created_companies += 1
+
             self.universe.add_listing(
                 real_company_id=company.real_company_id,
                 exchange=exchange,
@@ -114,11 +128,6 @@ class GlobalListedCompanyIngestion:
                 currency=record.get("currency"),
                 primary=True,
             )
-            created_companies += 1
             created_listings += 1
 
-        return {
-            "created_companies": created_companies,
-            "created_listings": created_listings,
-            "skipped": skipped,
-        }
+
