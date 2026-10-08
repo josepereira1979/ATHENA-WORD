@@ -1,0 +1,121 @@
+{
+    "engine_name": "ATHENA WORLD - AGENT ENGINE",
+    "engine_version": "V02",
+    "updated_at": "2026-09-30T10:12:18.753452",
+    "agents": [
+        {
+            "agent_id": "AGENT-223B9564C22F",
+            "first_name": "Joao",
+            "last_name": "Pereira",
+            "age": 30,
+            "gender": "M",
+            "birth_date": "1996-11-28",
+            "profession": "Engenheiro",
+            "primary_company_id": null,
+            "capital": 10000.0,
+            "income": 2000.0,
+            "expenses": 1000.0,
+            "debt": 0.0,
+            "goals": [
+                "Aumentar capital",
+                "Aprender",
+                "Melhorar qualidade de vida"
+            ],
+            "personality": {
+                "curiosity": 0.304910864533651,
+                "discipline": 0.22402619662166492,
+                "risk_tolerance": 0.8225507553212058,
+                "patience": 0.7172711535562724,
+                "ambition": 0.5767700528167305,
+                "sociability": 0.7584183937816751,
+                "adaptability": 0.7059201278417826
+            },
+            "knowledge": {
+                "economics": 0.0,
+                "finance": 0.0,
+                "technology": 0.0,
+                "management": 0.0,
+                "production": 0.0,
+                "social": 0.0,
+                "general": 0.0
+            },
+            "memories": [
+                {
+                    "memory_id": "MEM-15178189C03C",
+                    "world_date": "2027-02-02",
+                    "event_type": "CREATION",
+                    "description": "Agente criado no ATHENA WORLD.",
+                    "outcome": "Agente iniciou a sua existência.",
+                    "importance": 0.5
+                }
+            ],
+            "decisions_made": 0,
+            "successful_decisions": 0,
+            "failed_decisions": 0,
+            "experience": 0.0,
+            "alive": true,
+            "generation": 1,
+            "family_id": "FAMILY-CBD6A3774493",
+            "created_world_date": "2027-02-02",
+            "last_update_world_date": "2027-02-02",
+            "total_ticks_processed": 0
+        },
+        {
+            "agent_id": "AGENT-D0B00B242510",
+            "first_name": "Maria",
+            "last_name": "Pereira",
+            "age": 29,
+            "gender": "F",
+            "birth_date": "1997-06-08",
+            "profession": "Professora",
+            "primary_company_id": null,
+            "capital": 9000.0,
+            "income": 1800.0,
+            "expenses": 930.0,
+            "debt": 0.0,
+            "goals": [
+                "Aumentar capital",
+                "Aprender",
+                "Melhorar qualidade de vida"
+            ],
+            "personality": {
+                "curiosity": 0.617343171892704,
+                "discipline": 0.4111070094781314,
+                "risk_tolerance": 0.6114127224943193,
+                "patience": 0.5432460737271448,
+                "ambition": 0.732067638556267,
+                "sociability": 0.22681258464588153,
+                "adaptability": 0.6380042301571214
+            },
+            "knowledge": {
+                "economics": 0.0,
+                "finance": 0.0,
+                "technology": 0.0,
+                "management": 0.0,
+                "production": 0.0,
+                "social": 0.0,
+                "general": 0.0
+            },
+            "memories": [
+                {
+                    "memory_id": "MEM-409989A20324",
+                    "world_date": "2027-02-02",
+                    "event_type": "CREATION",
+                    "description": "Agente criado no ATHENA WORLD.",
+                    "outcome": "Agente iniciou a sua existência.",
+                    "importance": 0.5
+                }
+            ],
+            "decisions_made": 0,
+            "successful_decisions": 0,
+            "failed_decisions": 0,
+            "experience": 0.0,
+            "alive": true,
+            "generation": 1,
+            "family_id": "FAMILY-CBD6A3774493",
+            "created_world_date": "2027-02-02",
+            "last_update_world_date": "2027-02-02",
+            "total_ticks_processed": 0
+        }
+    ]
+}

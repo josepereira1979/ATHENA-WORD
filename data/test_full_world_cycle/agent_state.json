@@ -1,0 +1,64 @@
+{
+    "engine_name": "ATHENA WORLD - AGENT ENGINE",
+    "engine_version": "V02",
+    "updated_at": "2026-09-30T12:11:45.778136",
+    "agents": [
+        {
+            "agent_id": "AGENT-34E6E7661CE7",
+            "first_name": "Joao",
+            "last_name": "Pereira",
+            "age": 35,
+            "gender": "M",
+            "birth_date": "1991-11-28",
+            "profession": "Gestor",
+            "primary_company_id": null,
+            "capital": 25033.333333333332,
+            "income": 3000.0,
+            "expenses": 2000.0,
+            "debt": 0.0,
+            "goals": [
+                "Aumentar capital",
+                "Aprender",
+                "Melhorar qualidade de vida"
+            ],
+            "personality": {
+                "curiosity": 0.7281454311046769,
+                "discipline": 0.6994022134355453,
+                "risk_tolerance": 0.1389824179491515,
+                "patience": 0.3308546151134404,
+                "ambition": 0.37672207208695896,
+                "sociability": 0.6187112429321551,
+                "adaptability": 0.8551375246809632
+            },
+            "knowledge": {
+                "economics": 6.994022134355454e-05,
+                "finance": 7.281454311046769e-05,
+                "technology": 0.0002738997149230798,
+                "management": 6.994022134355454e-05,
+                "production": 6.994022134355454e-05,
+                "social": 6.187112429321551e-05,
+                "general": 0.00010922181466570152
+            },
+            "memories": [
+                {
+                    "memory_id": "MEM-81ACE09E0C9D",
+                    "world_date": "2027-01-01",
+                    "event_type": "CREATION",
+                    "description": "Agente criado no ATHENA WORLD.",
+                    "outcome": "Agente iniciou a sua existência.",
+                    "importance": 0.5
+                }
+            ],
+            "decisions_made": 0,
+            "successful_decisions": 0,
+            "failed_decisions": 0,
+            "experience": 0.0008206712923052963,
+            "alive": true,
+            "generation": 1,
+            "family_id": null,
+            "created_world_date": "2027-01-01",
+            "last_update_world_date": "2027-01-02",
+            "total_ticks_processed": 1
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "engine_name": "ATHENA WORLD - FAMILY ENGINE",
+    "engine_version": "V01",
+    "updated_at": "2026-09-30T10:12:18.751804",
+    "families": [
+        {
+            "family_id": "FAMILY-CBD6A3774493",
+            "family_name": "Pereira",
+            "created_world_date": "2027-02-02",
+            "generation": 1,
+            "parent_family_id": null,
+            "member_ids": [
+                "AGENT-223B9564C22F",
+                "AGENT-D0B00B242510"
+            ],
+            "child_family_ids": [],
+            "wealth": 0.0,
+            "inherited_wealth": 0.0,
+            "knowledge_transfer_count": 0,
+            "inheritance_count": 0,
+            "alive": true,
+            "last_update_world_date": "2027-02-02"
+        }
+    ],
+    "parents": {},
+    "children": {},
+    "spouses": {
+        "AGENT-223B9564C22F": "AGENT-D0B00B242510",
+        "AGENT-D0B00B242510": "AGENT-223B9564C22F"
+    }
+}

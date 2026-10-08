@@ -1,0 +1,82 @@
+{
+    "world_date": "2027-01-02",
+    "tick": 1,
+    "total_ticks": 1,
+    "registered_engines": {
+        "WORLD_CORE": {
+            "engine_name": "WORLD_CORE",
+            "engine_version": "V01",
+            "engine_type": "CORE",
+            "status": "ACTIVE",
+            "registered_at": "2026-09-30T11:11:45.766987+00:00"
+        },
+        "AGENT": {
+            "engine_name": "AGENT",
+            "engine_version": "V02",
+            "engine_type": "ENGINE",
+            "status": "ACTIVE",
+            "registered_at": "2026-09-30T11:11:45.767791+00:00"
+        },
+        "FAMILY": {
+            "engine_name": "FAMILY",
+            "engine_version": "V01",
+            "engine_type": "ENGINE",
+            "status": "ACTIVE",
+            "registered_at": "2026-09-30T11:11:45.768520+00:00"
+        },
+        "COMPANY": {
+            "engine_name": "COMPANY",
+            "engine_version": "V01",
+            "engine_type": "ENGINE",
+            "status": "ACTIVE",
+            "registered_at": "2026-09-30T11:11:45.769219+00:00"
+        },
+        "ECONOMY": {
+            "engine_name": "ECONOMY",
+            "engine_version": "V01",
+            "engine_type": "ENGINE",
+            "status": "ACTIVE",
+            "registered_at": "2026-09-30T11:11:45.769949+00:00"
+        },
+        "RESOURCE": {
+            "engine_name": "RESOURCE",
+            "engine_version": "V01",
+            "engine_type": "ENGINE",
+            "status": "ACTIVE",
+            "registered_at": "2026-09-30T11:11:45.770726+00:00"
+        },
+        "INFRASTRUCTURE": {
+            "engine_name": "INFRASTRUCTURE",
+            "engine_version": "V01",
+            "engine_type": "ENGINE",
+            "status": "ACTIVE",
+            "registered_at": "2026-09-30T11:11:45.772447+00:00"
+        },
+        "MARKET": {
+            "engine_name": "MARKET",
+            "engine_version": "V01",
+            "engine_type": "ENGINE",
+            "status": "ACTIVE",
+            "registered_at": "2026-09-30T11:11:45.773392+00:00"
+        },
+        "FINANCIAL": {
+            "engine_name": "FINANCIAL",
+            "engine_version": "V01",
+            "engine_type": "ENGINE",
+            "status": "ACTIVE",
+            "registered_at": "2026-09-30T11:11:45.774300+00:00"
+        },
+        "EVENT": {
+            "engine_name": "EVENT",
+            "engine_version": "V01",
+            "engine_type": "ENGINE",
+            "status": "ACTIVE",
+            "registered_at": "2026-09-30T11:11:45.775183+00:00"
+        }
+    },
+    "last_sync": "2026-09-30T11:11:45.783126+00:00",
+    "created_at": "2026-09-30T11:11:45.766946+00:00",
+    "updated_at": "2026-09-30T11:11:45.783132+00:00",
+    "engine_name": "ATHENA WORLD - WORLD API",
+    "engine_version": "V01"
+}

@@ -1,0 +1,141 @@
+{
+    "world_date": "2026-09-30",
+    "tick": 1,
+    "total_ticks": 1,
+    "observations": {
+        "OBS-7CBED9E36256": {
+            "observation_id": "OBS-7CBED9E36256",
+            "world_date": "2026-09-29",
+            "tick": 0,
+            "source_engine": "ECONOMY",
+            "subject_id": "WORLD",
+            "subject_type": "WORLD",
+            "metric": "GDP",
+            "value": 120.0,
+            "previous_value": 100.0,
+            "change": 20.0,
+            "change_rate": 0.2,
+            "created_at": "2026-09-29T17:10:25.124422+01:00"
+        },
+        "OBS-494D67F229CC": {
+            "observation_id": "OBS-494D67F229CC",
+            "world_date": "2026-09-29",
+            "tick": 0,
+            "source_engine": "MARKET",
+            "subject_id": "ASSET-001",
+            "subject_type": "ASSET",
+            "metric": "PRICE",
+            "value": 150.0,
+            "previous_value": 100.0,
+            "change": 50.0,
+            "change_rate": 0.5,
+            "created_at": "2026-09-29T17:10:25.125099+01:00"
+        }
+    },
+    "anomalies": {
+        "ANOM-5DE87458F862": {
+            "anomaly_id": "ANOM-5DE87458F862",
+            "world_date": "2026-09-29",
+            "tick": 0,
+            "source_engine": "MARKET",
+            "subject_id": "ASSET-001",
+            "metric": "PRICE",
+            "observed_value": 150.0,
+            "expected_value": 100.0,
+            "deviation": 0.5,
+            "threshold": 0.2,
+            "severity": 0.5,
+            "description": "Preço do ativo muito acima do valor esperado.",
+            "active": true,
+            "created_at": "2026-09-29T17:10:25.125477+01:00"
+        }
+    },
+    "patterns": {
+        "PAT-FF7636FDE793": {
+            "pattern_id": "PAT-FF7636FDE793",
+            "world_date": "2026-09-29",
+            "tick": 0,
+            "name": "Aceleração Económica",
+            "description": "A aceleração do PIB coincide com aumento significativo do preço do ativo.",
+            "source_engines": [
+                "ECONOMY",
+                "MARKET"
+            ],
+            "subjects": [
+                "WORLD",
+                "ASSET-001"
+            ],
+            "observations": [
+                "OBS-7CBED9E36256",
+                "OBS-494D67F229CC"
+            ],
+            "confidence": 0.75,
+            "strength": 0.8,
+            "status": "OPEN",
+            "created_at": "2026-09-29T17:10:25.125846+01:00"
+        }
+    },
+    "relationships": {
+        "REL-55748B571A44": {
+            "relationship_id": "REL-55748B571A44",
+            "world_date": "2026-09-29",
+            "tick": 0,
+            "source_subject": "WORLD",
+            "source_metric": "GDP",
+            "target_subject": "ASSET-001",
+            "target_metric": "PRICE",
+            "relationship_type": "POSITIVE",
+            "strength": 0.7,
+            "confidence": 0.65,
+            "observations": [
+                "OBS-7CBED9E36256",
+                "OBS-494D67F229CC"
+            ],
+            "description": "Aumento do PIB associado a aumento do preço do ativo.",
+            "created_at": "2026-09-29T17:10:25.126233+01:00"
+        }
+    },
+    "signals": {
+        "SIG-F771E7D6CA0F": {
+            "signal_id": "SIG-F771E7D6CA0F",
+            "world_date": "2026-09-29",
+            "tick": 0,
+            "signal_type": "PRE_EVENT",
+            "source_engine": "OBSERVER",
+            "subject_id": "ASSET-001",
+            "metric": "PRICE",
+            "strength": 0.8,
+            "confidence": 0.7,
+            "description": "Movimento anormal do ativo associado a aceleração económica.",
+            "followed_by_event": false,
+            "created_at": "2026-09-29T17:10:25.126625+01:00"
+        }
+    },
+    "hypotheses": {
+        "HYP-387E93CE40AE": {
+            "hypothesis_id": "HYP-387E93CE40AE",
+            "world_date": "2026-09-29",
+            "tick": 0,
+            "statement": "A aceleração económica pode preceder um aumento sustentado de determinados ativos.",
+            "supporting_observations": [
+                "OBS-7CBED9E36256",
+                "OBS-494D67F229CC"
+            ],
+            "contradicting_observations": [],
+            "confidence": 0.65,
+            "status": "OPEN",
+            "created_at": "2026-09-29T17:10:25.127031+01:00",
+            "updated_at": "2026-09-29T17:10:25.127867+01:00"
+        }
+    },
+    "total_observations": 2,
+    "total_anomalies": 1,
+    "total_patterns": 1,
+    "total_relationships": 1,
+    "total_signals": 1,
+    "total_hypotheses": 1,
+    "created_at": "2026-09-29T17:10:25.123894+01:00",
+    "updated_at": "2026-09-29T17:10:25.129039+01:00",
+    "engine_name": "ATHENA WORLD - WORLD OBSERVER ENGINE",
+    "engine_version": "V01"
+}

@@ -1,0 +1,62 @@
+{
+    "world_date": "2027-01-02",
+    "tick": 1,
+    "total_ticks": 1,
+    "cities": {
+        "CITY-001": {
+            "city_id": "CITY-001",
+            "name": "Nova Aurora",
+            "country": "WORLD",
+            "population": 1000,
+            "housing_capacity": 0.0,
+            "road_capacity": 0.0,
+            "energy_capacity": 940.0,
+            "water_capacity": 0.0,
+            "telecom_capacity": 0.0,
+            "hospital_capacity": 0.0,
+            "school_capacity": 0.0,
+            "transport_capacity": 0.0,
+            "infrastructure_quality": 1.0,
+            "infrastructure_ids": [
+                "INFRA-001"
+            ],
+            "created_at": "2026-09-30T12:11:45.761384+01:00",
+            "updated_at": "2026-09-30T12:11:45.780726+01:00"
+        }
+    },
+    "infrastructures": {
+        "INFRA-001": {
+            "infrastructure_id": "INFRA-001",
+            "name": "Central EnergÃ©tica",
+            "category": "ENERGY",
+            "city_id": "CITY-001",
+            "capacity": 1000.0,
+            "utilization": 1.0,
+            "condition": 0.94,
+            "quality": 0.94,
+            "maintenance_rate": 0.01,
+            "maintenance_cost": 0.0,
+            "construction_cost": 0.0,
+            "construction_years": 0.0,
+            "active": true,
+            "created_at": "2026-09-30T12:11:45.761735+01:00",
+            "updated_at": "2026-09-30T12:11:45.780298+01:00"
+        }
+    },
+    "total_cities": 1,
+    "total_infrastructure": 1,
+    "total_population": 1000,
+    "housing_capacity": 0.0,
+    "road_capacity": 0.0,
+    "energy_capacity": 940.0,
+    "water_capacity": 0.0,
+    "telecom_capacity": 0.0,
+    "hospital_capacity": 0.0,
+    "school_capacity": 0.0,
+    "transport_capacity": 0.0,
+    "infrastructure_quality": 0.94,
+    "created_at": "2026-09-30T12:11:45.761048+01:00",
+    "updated_at": "2026-09-30T12:11:45.780753+01:00",
+    "engine_name": "ATHENA WORLD - INFRASTRUCTURE ENGINE",
+    "engine_version": "V01"
+}

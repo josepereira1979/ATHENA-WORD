@@ -1,0 +1,40 @@
+{
+    "world_date": "2027-01-02",
+    "tick": 1,
+    "total_ticks": 1,
+    "events": {
+        "EVENT-3E27688C7DCE": {
+            "event_id": "EVENT-3E27688C7DCE",
+            "name": "Crise energÃ©tica",
+            "category": "RESOURCE",
+            "event_type": "CRISIS",
+            "description": "ReduÃ§Ã£o temporÃ¡ria da disponibilidade energÃ©tica.",
+            "origin": "INTERNAL",
+            "probability": 1.0,
+            "intensity": 0.5,
+            "duration_ticks": 2,
+            "remaining_ticks": 1,
+            "economic_impact": -0.1,
+            "company_impact": -0.3,
+            "resource_impact": -0.25,
+            "infrastructure_impact": -0.2,
+            "market_impact": -0.05,
+            "financial_impact": -0.05,
+            "social_impact": 0.0,
+            "technology_impact": 0.0,
+            "status": "ACTIVE",
+            "world_date": "2027-01-01",
+            "created_at": "2026-09-30T12:11:45.766336+01:00",
+            "updated_at": "2026-09-30T12:11:45.782609+01:00"
+        }
+    },
+    "total_events": 1,
+    "active_events": 1,
+    "completed_events": 0,
+    "events_generated": 1,
+    "events_completed": 0,
+    "created_at": "2026-09-30T12:11:45.766004+01:00",
+    "updated_at": "2026-09-30T12:11:45.782631+01:00",
+    "engine_name": "ATHENA WORLD - EVENT ENGINE",
+    "engine_version": "V01"
+}

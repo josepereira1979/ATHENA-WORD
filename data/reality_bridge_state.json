@@ -1,0 +1,73 @@
+{
+    "world_date": "2026-09-30",
+    "tick": 1,
+    "total_ticks": 1,
+    "mappings": {
+        "MAP-408B818B7121": {
+            "mapping_id": "MAP-408B818B7121",
+            "virtual_company_id": "COMPANY-001",
+            "virtual_company_name": "Atlas Industries",
+            "real_company_id": "REAL-001",
+            "real_company_name": "Real Company Example",
+            "ticker": "EXMP",
+            "exchange": "TEST",
+            "country": "USA",
+            "sector": "TECHNOLOGY",
+            "active": true,
+            "created_at": "2026-09-29T17:12:08.796016+01:00",
+            "updated_at": "2026-09-29T17:12:08.796034+01:00"
+        }
+    },
+    "real_observations": {
+        "RDO-D8E61C3FD714": {
+            "observation_id": "RDO-D8E61C3FD714",
+            "mapping_id": "MAP-408B818B7121",
+            "real_company_id": "REAL-001",
+            "data_type": "MARKET",
+            "metric": "PRICE",
+            "value": 150.0,
+            "observation_date": "2026-09-29",
+            "source": "TEST_SOURCE",
+            "unit": "USD",
+            "created_at": "2026-09-29T17:12:08.796802+01:00"
+        }
+    },
+    "real_events": {
+        "REV-7F0D8D17D7BD": {
+            "event_id": "REV-7F0D8D17D7BD",
+            "mapping_id": "MAP-408B818B7121",
+            "real_company_id": "REAL-001",
+            "event_type": "CORPORATE",
+            "title": "Resultado trimestral",
+            "description": "Evento real utilizado para teste da ponte de realidade.",
+            "event_date": "2026-09-29",
+            "source": "TEST_SOURCE",
+            "impact": 0.4,
+            "created_at": "2026-09-29T17:12:08.797228+01:00"
+        }
+    },
+    "comparisons": {
+        "CMP-311F652D2EE0": {
+            "comparison_id": "CMP-311F652D2EE0",
+            "mapping_id": "MAP-408B818B7121",
+            "virtual_metric": "PRICE",
+            "virtual_value": 135.0,
+            "real_metric": "PRICE",
+            "real_value": 150.0,
+            "difference": -15.0,
+            "difference_rate": -0.1,
+            "world_date": "2026-09-29",
+            "real_date": "2026-09-29",
+            "interpretation": "O preço virtual encontra-se abaixo do preço observado no mundo real.",
+            "created_at": "2026-09-29T17:12:08.797605+01:00"
+        }
+    },
+    "total_mappings": 1,
+    "total_real_observations": 1,
+    "total_real_events": 1,
+    "total_comparisons": 1,
+    "created_at": "2026-09-29T17:12:08.795462+01:00",
+    "updated_at": "2026-09-29T17:12:08.798669+01:00",
+    "engine_name": "ATHENA WORLD - REALITY BRIDGE ENGINE",
+    "engine_version": "V01"
+}

@@ -1,0 +1,35 @@
+{
+    "world_date": "2027-01-02",
+    "tick": 1,
+    "total_ticks": 1,
+    "resources": {
+        "ENERGY-001": {
+            "resource_id": "ENERGY-001",
+            "name": "Energia",
+            "category": "ENERGY",
+            "unit": "MWh",
+            "reserves": 9000.0,
+            "production_capacity": 1000.0,
+            "production": 0.0,
+            "consumption": 0.0,
+            "imports": 0.0,
+            "exports": 0.0,
+            "price": 100.0,
+            "base_price": 100.0,
+            "availability": 1.0,
+            "scarcity": 0.0,
+            "surplus": 0.0,
+            "renewable": false,
+            "active": true,
+            "created_at": "2026-09-30T12:11:45.759810+01:00",
+            "updated_at": "2026-09-30T12:11:45.779778+01:00"
+        }
+    },
+    "total_resources": 1,
+    "scarce_resources": 0,
+    "surplus_resources": 0,
+    "created_at": "2026-09-30T12:11:45.759465+01:00",
+    "updated_at": "2026-09-30T12:11:45.779802+01:00",
+    "engine_name": "ATHENA WORLD - RESOURCE ENGINE",
+    "engine_version": "V01"
+}

@@ -1,0 +1,14 @@
+{
+    "world_id": "WORLD-3F526B8B15C1",
+    "world_name": "ATHENA WORLD",
+    "status": "ACTIVE",
+    "world_date": "2027-02-02",
+    "tick": 126,
+    "total_ticks": 126,
+    "simulation_speed": 1.0,
+    "paused": false,
+    "created_at": "2026-09-29T15:22:20.699933+00:00",
+    "updated_at": "2026-09-30T09:04:08.946612+00:00",
+    "engine_name": "ATHENA WORLD - WORLD CORE ENGINE",
+    "engine_version": "V01"
+}

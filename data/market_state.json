@@ -1,0 +1,50 @@
+{
+    "world_date": "2027-01-01",
+    "tick": 1,
+    "total_ticks": 1,
+    "markets": {
+        "MARKET-001": {
+            "market_id": "MARKET-001",
+            "name": "Central Exchange",
+            "market_type": "EXCHANGE",
+            "asset_ids": [
+                "ATLA"
+            ],
+            "order_ids": [],
+            "trade_ids": [],
+            "active": true,
+            "created_at": "2026-09-30T11:08:04.037643+01:00",
+            "updated_at": "2026-09-30T11:08:04.038125+01:00"
+        }
+    },
+    "assets": {
+        "ATLA": {
+            "asset_id": "ATLA",
+            "symbol": "ATLA",
+            "name": "Atlas Industries",
+            "asset_type": "STOCK",
+            "last_price": 80.0,
+            "previous_price": 100.0,
+            "total_volume": 0.0,
+            "total_trades": 0,
+            "volatility": 0.2,
+            "liquidity": 0.0,
+            "best_bid": 0.0,
+            "best_ask": 0.0,
+            "spread": 0.0,
+            "active": true,
+            "created_at": "2026-09-30T11:08:04.038125+01:00",
+            "updated_at": "2026-09-30T11:08:04.038125+01:00"
+        }
+    },
+    "orders": {},
+    "trades": {},
+    "total_markets": 1,
+    "total_assets": 1,
+    "total_orders": 0,
+    "total_trades": 0,
+    "created_at": "2026-09-30T11:08:04.035374+01:00",
+    "updated_at": "2026-09-30T11:08:04.039488+01:00",
+    "engine_name": "ATHENA WORLD - MARKET ENGINE",
+    "engine_version": "V01"
+}

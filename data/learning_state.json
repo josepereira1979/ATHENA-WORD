@@ -1,0 +1,116 @@
+{
+    "world_date": "2026-10-29",
+    "tick": 1,
+    "total_ticks": 1,
+    "experiences": {
+        "EXP-B41A45A78157": {
+            "experience_id": "EXP-B41A45A78157",
+            "owner_id": "AGENT-001",
+            "owner_type": "AGENT",
+            "world_date": "2026-10-01",
+            "event_type": "INVESTMENT",
+            "description": "O agente realizou um investimento após acumular capital.",
+            "outcome": "Retorno positivo.",
+            "success": true,
+            "impact": 0.4,
+            "learning_value": 0.1,
+            "knowledge_domain": "FINANCE",
+            "strategy": "Poupar antes de investir",
+            "lesson": "Manter liquidez antes de investir reduziu o risco.",
+            "created_at": "2026-09-29T17:06:45.673170+01:00"
+        },
+        "EXP-48AEAF96F67B": {
+            "experience_id": "EXP-48AEAF96F67B",
+            "owner_id": "AGENT-001",
+            "owner_type": "AGENT",
+            "world_date": "2026-10-15",
+            "event_type": "INVESTMENT",
+            "description": "O agente realizou uma segunda operação sem analisar suficientemente o risco.",
+            "outcome": "Perda financeira.",
+            "success": false,
+            "impact": -0.5,
+            "learning_value": 0.12,
+            "knowledge_domain": "FINANCE",
+            "strategy": "",
+            "lesson": "Decisões com pouca análise aumentaram o risco.",
+            "created_at": "2026-09-29T17:06:45.673666+01:00"
+        }
+    },
+    "knowledge": {
+        "AGENT:AGENT-001:FINANCE": {
+            "knowledge_id": "AGENT:AGENT-001:FINANCE",
+            "owner_id": "AGENT-001",
+            "owner_type": "AGENT",
+            "domain": "FINANCE",
+            "level": 0.387,
+            "experience_count": 2,
+            "successful_experiences": 1,
+            "failed_experiences": 1,
+            "discoveries": 1,
+            "inherited": 0,
+            "transferred": 0,
+            "last_learning_date": "2026-10-15",
+            "created_at": "2026-09-29T17:06:45.673196+01:00",
+            "updated_at": "2026-09-29T17:06:45.674173+01:00"
+        },
+        "AGENT:AGENT-002:FINANCE": {
+            "knowledge_id": "AGENT:AGENT-002:FINANCE",
+            "owner_id": "AGENT-002",
+            "owner_type": "AGENT",
+            "domain": "FINANCE",
+            "level": 0.1,
+            "experience_count": 0,
+            "successful_experiences": 0,
+            "failed_experiences": 0,
+            "discoveries": 0,
+            "inherited": 0,
+            "transferred": 1,
+            "last_learning_date": "",
+            "created_at": "2026-09-29T17:06:45.674580+01:00",
+            "updated_at": "2026-09-29T17:06:45.674597+01:00"
+        }
+    },
+    "strategies": {
+        "STRAT-E6B5D1DC7B0E": {
+            "strategy_id": "STRAT-E6B5D1DC7B0E",
+            "owner_id": "AGENT-001",
+            "owner_type": "AGENT",
+            "name": "Poupar antes de investir",
+            "description": "Acumular capital antes de assumir novos investimentos.",
+            "domain": "FINANCE",
+            "effectiveness": 1.0,
+            "uses": 1,
+            "successes": 1,
+            "failures": 0,
+            "active": true,
+            "created_at": "2026-09-29T17:06:45.672299+01:00",
+            "updated_at": "2026-09-29T17:06:45.673220+01:00"
+        }
+    },
+    "discoveries": {
+        "DISC-0B4537E27034": {
+            "discovery_id": "DISC-0B4537E27034",
+            "owner_id": "AGENT-001",
+            "owner_type": "AGENT",
+            "world_date": "2026-10-20",
+            "domain": "FINANCE",
+            "name": "Importância da Liquidez",
+            "description": "O agente descobre que manter liquidez permite aproveitar oportunidades.",
+            "importance": 0.8,
+            "adopted": false,
+            "created_at": "2026-09-29T17:06:45.674151+01:00"
+        }
+    },
+    "total_experiences": 2,
+    "total_knowledge_records": 2,
+    "total_strategies": 1,
+    "total_discoveries": 1,
+    "total_successes": 1,
+    "total_failures": 1,
+    "total_knowledge_transfers": 1,
+    "total_inherited_knowledge": 0,
+    "created_at": "2026-09-29T17:06:45.671670+01:00",
+    "updated_at": "2026-09-29T17:06:45.675969+01:00",
+    "engine_name": "ATHENA WORLD - LEARNING ENGINE",
+    "engine_version": "V01"
+}
