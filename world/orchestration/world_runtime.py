@@ -21,6 +21,9 @@ from world.learning.learning_engine import LearningEngine
 from world.reality_bridge.reality_bridge_engine import RealityBridgeEngine
 from world.intelligence.prediction_engine import PredictionEngine
 from world.reality_bridge.real_company_universe import RealCompanyUniverse
+from world.intelligence.corporate_network_engine import CorporateNetworkEngine
+from world.intelligence.network_propagation_engine import NetworkPropagationEngine
+from world.intelligence.network_shock_processor import NetworkShockProcessor
 
 
 class WorldRuntime:
@@ -64,6 +67,20 @@ class WorldRuntime:
             ),
         }
 
+        self.corporate_network = CorporateNetworkEngine(
+            state_file=sf("corporate_network_state.json"),
+            universe=self.engines["REALITY_BRIDGE"].universe,
+        )
+        self.network_propagation = NetworkPropagationEngine(
+            self.corporate_network,
+            state_file=sf("network_propagation_state.json"),
+        )
+        self.network_shock_processor = NetworkShockProcessor(
+            self.network_propagation,
+            family_engine=self.engines["FAMILY"],
+            learning_engine=self.engines["LEARNING"],
+        )
+
         self.prediction_engine = PredictionEngine(
             state_file=sf("prediction_state.json"),
             auto_load=auto_load,
@@ -89,6 +106,10 @@ class WorldRuntime:
         self.orchestrator.register_processor(
             "INTELLIGENCE",
             self._process_intelligence_cycle,
+        )
+        self.orchestrator.register_processor(
+            "REAL_NETWORK_INTELLIGENCE",
+            self._process_real_network_intelligence,
         )
 
     def _process_intelligence_cycle(self, world_date: str) -> None:
@@ -127,6 +148,15 @@ class WorldRuntime:
         self._update_collective_intelligence(world_date)
         self._create_family_predictions(world_date)
         self._update_family_reputation()
+
+    def _process_real_network_intelligence(self, world_date: str) -> None:
+        """Processa apenas sinais de rede que já foram explicitamente gerados.
+
+        A rede corporativa não inventa choques por si só. Eventos/observações
+        futuros podem chamar network_shock_processor.process_shock() e obter
+        propagação auditável até às famílias atribuídas.
+        """
+        self.engines["LEARNING"].process_tick(world_date)
 
     def _build_observations(self, world_date: str, tick: int) -> list[dict]:
         observations: list[dict] = []
