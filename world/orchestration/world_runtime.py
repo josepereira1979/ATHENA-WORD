@@ -25,6 +25,7 @@ from world.intelligence.corporate_network_engine import CorporateNetworkEngine
 from world.intelligence.network_propagation_engine import NetworkPropagationEngine
 from world.intelligence.network_shock_processor import NetworkShockProcessor
 from world.intelligence.network_shock_queue import NetworkShockQueue
+from world.intelligence.family_company_expansion import FamilyCompanyExpansion
 
 
 class WorldRuntime:
@@ -78,6 +79,12 @@ class WorldRuntime:
         )
         self.network_shock_queue = NetworkShockQueue(
             state_file=sf("network_shock_queue_state.json"),
+        )
+        self.family_company_expansion = FamilyCompanyExpansion(
+            family_engine=self.engines["FAMILY"],
+            company_engine=self.engines["COMPANY"],
+            universe=self.engines["REALITY_BRIDGE"].universe,
+            runtime=self,
         )
         self.network_shock_processor = NetworkShockProcessor(
             self.network_propagation,
@@ -167,6 +174,13 @@ class WorldRuntime:
                 source_observation_id=shock.source_observation_id,
             )
             self.network_shock_queue.mark_processed(shock.shock_id)
+
+    def expand_real_company_world(self, limit: int | None = None) -> Dict[str, Any]:
+        """Cria empresas virtuais e atribui famílias, mantendo relação 1:1."""
+        return self.family_company_expansion.expand(
+            world_date=self.world_core.state["world_date"],
+            limit=limit,
+        )
 
     def queue_real_network_shock(
         self,
