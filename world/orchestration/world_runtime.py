@@ -32,6 +32,7 @@ from world.intelligence.global_market_census import GlobalMarketCensus
 from world.intelligence.global_world_population import GlobalWorldPopulationEngine
 from world.intelligence.world_control_center import WorldControlCenter
 from world.intelligence.corporate_network_intelligence import CorporateNetworkIntelligence
+from world.orchestration.world_launch_controller import WorldLaunchController
 
 
 class WorldRuntime:
@@ -92,6 +93,7 @@ class WorldRuntime:
         self._global_market_census = GlobalMarketCensus(self)
         self.global_world_population = GlobalWorldPopulationEngine(self)
         self.control_center = WorldControlCenter(self)
+        self.launch_controller = WorldLaunchController(self)
         self.corporate_network_intelligence = CorporateNetworkIntelligence(self.corporate_network, self.engines['FAMILY'], self.engines['LEARNING'])
         self.family_company_expansion = FamilyCompanyExpansion(
             family_engine=self.engines["FAMILY"],
@@ -194,6 +196,12 @@ class WorldRuntime:
                 source_observation_id=shock.source_observation_id,
             )
             self.network_shock_queue.mark_processed(shock.shock_id)
+
+    def launch_readiness(self) -> Dict[str, Any]:
+        return self.launch_controller.readiness()
+
+    def prepare_world(self, allocate: bool = False, cycles: int = 0) -> Dict[str, Any]:
+        return self.launch_controller.prepare(allocate=allocate, cycles=cycles)
 
     def world_snapshot(self) -> Dict[str, Any]:
         return self.control_center.snapshot()
