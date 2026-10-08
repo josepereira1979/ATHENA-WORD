@@ -38,6 +38,7 @@ class Prediction:
     invalidation_condition: Optional[str] = None
     supporting_evidence: List[str] = field(default_factory=list)
     contradicting_evidence: List[str] = field(default_factory=list)
+    source_hypothesis_id: Optional[str] = None
     status: str = "OPEN"
     outcome: Optional[str] = None
     actual_value: Optional[float] = None
@@ -84,6 +85,7 @@ class PredictionEngine:
         invalidation_condition: Optional[str] = None,
         supporting_evidence: Optional[List[str]] = None,
         contradicting_evidence: Optional[List[str]] = None,
+        source_hypothesis_id: Optional[str] = None,
     ) -> Prediction:
         if not owner_id or not subject_id or not metric or not statement:
             raise ValueError("owner_id, subject_id, metric e statement são obrigatórios.")
@@ -114,6 +116,7 @@ class PredictionEngine:
             invalidation_condition=invalidation_condition,
             supporting_evidence=list(supporting_evidence or []),
             contradicting_evidence=list(contradicting_evidence or []),
+            source_hypothesis_id=source_hypothesis_id,
         )
         self.predictions[prediction.prediction_id] = prediction
         self.save()
@@ -144,7 +147,7 @@ class PredictionEngine:
         prediction_id: str,
         actual_value: float,
         actual_date: str,
-        outcome: str,
+        outcome: Optional[str] = None,
     ) -> Optional[Prediction]:
         prediction = self.get_prediction(prediction_id)
         if prediction is None:
@@ -156,7 +159,7 @@ class PredictionEngine:
 
         prediction.actual_value = float(actual_value)
         prediction.actual_date = actual_date
-        prediction.outcome = outcome.upper()
+        prediction.outcome = (outcome.upper() if outcome else self._derive_outcome(prediction, prediction.actual_value))
         prediction.status = "VALIDATED"
         if prediction.predicted_value is not None:
             prediction.error = (
@@ -165,6 +168,24 @@ class PredictionEngine:
         prediction.updated_at = now_iso()
         self.save()
         return prediction
+
+    @staticmethod
+    def _derive_outcome(
+        prediction: Prediction,
+        actual_value: float,
+        tolerance: float = 0.05,
+    ) -> str:
+        if prediction.predicted_value is None:
+            return "UNRESOLVED"
+        expected = prediction.predicted_value
+        if expected == 0:
+            return "CORRECT" if abs(actual_value) <= tolerance else "WRONG"
+        relative_error = abs(actual_value - expected) / abs(expected)
+        if relative_error <= tolerance:
+            return "CORRECT"
+        if relative_error <= tolerance * 3:
+            return "PARTIAL"
+        return "WRONG"
 
     def close_expired(
         self,
@@ -244,7 +265,7 @@ class PredictionEngine:
         with self.state_file.open("r", encoding="utf-8") as file:
             payload = json.load(file)
         self.predictions = {
-            item["prediction_id"]: Prediction(**item)
+            item["prediction_id"]: Prediction(**{**item, "source_hypothesis_id": item.get("source_hypothesis_id")})
             for item in payload.get("predictions", [])
         }
 
