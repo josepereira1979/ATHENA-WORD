@@ -205,6 +205,89 @@ class WorldRuntime:
             )
             self.network_shock_queue.mark_processed(shock.shock_id)
 
+    def ingest_real_observation(
+        self,
+        real_company_id: str,
+        metric: str,
+        value: float,
+        observation_date: str,
+        source: str,
+        data_type: str = "REAL",
+        unit: str | None = None,
+    ) -> Dict[str, Any]:
+        bridge = self.engines["REALITY_BRIDGE"]
+        mapping = bridge.get_mapping_by_real_company(real_company_id)
+        if mapping is None:
+            raise ValueError("A empresa real ainda não possui uma empresa WORLD atribuída.")
+        real_observation = bridge.record_real_observation(
+            mapping_id=mapping.mapping_id,
+            data_type=data_type,
+            metric=metric,
+            value=value,
+            observation_date=observation_date,
+            source=source,
+            unit=unit,
+        )
+        observer = self.engines["OBSERVER"]
+        previous = observer.get_latest_observation(mapping.virtual_company_id, metric)
+        world_observation = observer.ingest(
+            source_engine="REALITY_BRIDGE",
+            subject_id=mapping.virtual_company_id,
+            subject_type="COMPANY",
+            metric=metric,
+            value=float(value),
+            previous_value=float(previous.value) if previous is not None else None,
+            world_date=observation_date,
+            tick=int(self.world_core.state["tick"]),
+        )
+        for prediction in self.prediction_engine.get_open_predictions():
+            if prediction.subject_id == mapping.virtual_company_id and prediction.metric == metric:
+                if prediction.horizon_start <= observation_date <= prediction.horizon_end:
+                    self.prediction_engine.validate_from_observation(
+                        prediction.prediction_id,
+                        world_observation,
+                    )
+        return {
+            "real_observation_id": real_observation.observation_id,
+            "world_observation_id": world_observation.observation_id,
+            "virtual_company_id": mapping.virtual_company_id,
+            "prediction_accuracy": self.prediction_engine.accuracy(mapping.virtual_company_id),
+        }
+
+    def ingest_real_event(
+        self,
+        event_type: str,
+        title: str,
+        description: str,
+        event_date: str,
+        source: str,
+        real_company_id: str | None = None,
+        impact: float = 0.0,
+        direction: str | None = None,
+    ) -> Dict[str, Any]:
+        bridge = self.engines["REALITY_BRIDGE"]
+        mapping = bridge.get_mapping_by_real_company(real_company_id) if real_company_id else None
+        event = bridge.record_real_event(
+            event_type=event_type,
+            title=title,
+            description=description,
+            event_date=event_date,
+            source=source,
+            mapping_id=mapping.mapping_id if mapping else None,
+            real_company_id=real_company_id,
+            impact=impact,
+        )
+        shock = None
+        if real_company_id and direction:
+            shock = self.queue_real_network_shock(
+                origin_company_id=real_company_id,
+                direction=direction,
+                strength=abs(float(impact)),
+                world_date=event_date,
+                source_event_id=event.event_id,
+            )
+        return {"event_id": event.event_id, "shock": shock}
+
     def connect_real_world(self, records, allocate: bool = True) -> Dict[str, Any]:
         return self.real_world_connection.ingest_and_finalize(records, allocate=allocate)
 
