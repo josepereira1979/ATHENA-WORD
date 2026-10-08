@@ -26,6 +26,7 @@ from world.intelligence.network_propagation_engine import NetworkPropagationEngi
 from world.intelligence.network_shock_processor import NetworkShockProcessor
 from world.intelligence.network_shock_queue import NetworkShockQueue
 from world.intelligence.family_company_expansion import FamilyCompanyExpansion
+from world.intelligence.global_family_market_allocator import GlobalFamilyMarketAllocator
 
 
 class WorldRuntime:
@@ -80,6 +81,7 @@ class WorldRuntime:
         self.network_shock_queue = NetworkShockQueue(
             state_file=sf("network_shock_queue_state.json"),
         )
+        self.global_family_market_allocator = GlobalFamilyMarketAllocator(self)
         self.family_company_expansion = FamilyCompanyExpansion(
             family_engine=self.engines["FAMILY"],
             company_engine=self.engines["COMPANY"],
@@ -175,6 +177,14 @@ class WorldRuntime:
             )
             self.network_shock_queue.mark_processed(shock.shock_id)
 
+    def preview_global_family_market_allocation(self, limit: int | None = None) -> Dict[str, Any]:
+        return self.global_family_market_allocator.preview(limit=limit)
+
+    def allocate_global_family_market(self, limit: int | None = None) -> Dict[str, Any]:
+        return self.global_family_market_allocator.allocate(limit=limit)
+
+    def global_family_market_report(self) -> Dict[str, Any]:
+        return self.global_family_market_allocator.report()
     def expand_real_company_world(self, limit: int | None = None) -> Dict[str, Any]:
         """Cria empresas virtuais e atribui famílias, mantendo relação 1:1."""
         return self.family_company_expansion.expand(
