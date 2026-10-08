@@ -30,6 +30,7 @@ from world.intelligence.family_company_expansion import FamilyCompanyExpansion
 from world.intelligence.global_family_market_allocator import GlobalFamilyMarketAllocator
 from world.intelligence.global_market_census import GlobalMarketCensus
 from world.intelligence.global_world_population import GlobalWorldPopulationEngine
+from world.intelligence.global_world_finalizer import GlobalWorldFinalizer
 from world.intelligence.world_control_center import WorldControlCenter
 from world.intelligence.corporate_network_intelligence import CorporateNetworkIntelligence
 from world.orchestration.world_launch_controller import WorldLaunchController
@@ -92,6 +93,7 @@ class WorldRuntime:
         self.global_family_market_allocator = GlobalFamilyMarketAllocator(self)
         self._global_market_census = GlobalMarketCensus(self)
         self.global_world_population = GlobalWorldPopulationEngine(self)
+        self.global_world_finalizer = GlobalWorldFinalizer(self)
         self.control_center = WorldControlCenter(self)
         self.launch_controller = WorldLaunchController(self)
         self.corporate_network_intelligence = CorporateNetworkIntelligence(self.corporate_network, self.engines['FAMILY'], self.engines['LEARNING'])
@@ -196,6 +198,9 @@ class WorldRuntime:
                 source_observation_id=shock.source_observation_id,
             )
             self.network_shock_queue.mark_processed(shock.shock_id)
+
+    def finalize_global_world(self) -> Dict[str, Any]:
+        return self.global_world_finalizer.finalize(self.world_core.state['world_date'])
 
     def launch_readiness(self) -> Dict[str, Any]:
         return self.launch_controller.readiness()
