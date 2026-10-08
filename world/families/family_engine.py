@@ -71,6 +71,11 @@ class Family:
 
     last_update_world_date: str = ""
 
+    # Inteligência económica: ligação opcional à empresa atribuída.
+    # Um family pode ter no máximo uma empresa activa atribuída.
+    virtual_company_id: Optional[str] = None
+    real_company_id: Optional[str] = None
+
 
 # ============================================================
 # FAMILY ENGINE
@@ -162,6 +167,8 @@ class FamilyEngine:
             inheritance_count=0,
             alive=True,
             last_update_world_date=world_date,
+            virtual_company_id=None,
+            real_company_id=None,
         )
 
         self.families[
@@ -391,6 +398,84 @@ class FamilyEngine:
                 []
             )
         )
+
+    # ========================================================
+    # EMPRESA ATRIBUÍDA À FAMÍLIA
+    # ========================================================
+
+    def link_company(
+        self,
+        family_id: str,
+        virtual_company_id: str,
+        real_company_id: Optional[str] = None,
+        world_date: Optional[str] = None,
+    ) -> bool:
+        """Atribui uma empresa à família, sem permitir dupla atribuição."""
+
+        family = self.get_family(family_id)
+        if family is None or not virtual_company_id:
+            return False
+
+        # Uma família só pode ter uma empresa activa.
+        if (
+            family.virtual_company_id is not None
+            and family.virtual_company_id != virtual_company_id
+        ):
+            return False
+
+        # Uma empresa virtual só pode pertencer a uma família activa.
+        for other in self.families.values():
+            if (
+                other.family_id != family_id
+                and other.alive
+                and other.virtual_company_id == virtual_company_id
+            ):
+                return False
+
+        family.virtual_company_id = virtual_company_id
+        family.real_company_id = real_company_id
+        if world_date is not None:
+            family.last_update_world_date = world_date
+        self.save()
+        return True
+
+    def unlink_company(
+        self,
+        family_id: str,
+        world_date: Optional[str] = None,
+    ) -> bool:
+        family = self.get_family(family_id)
+        if family is None:
+            return False
+
+        family.virtual_company_id = None
+        family.real_company_id = None
+        if world_date is not None:
+            family.last_update_world_date = world_date
+        self.save()
+        return True
+
+    def get_family_by_company(
+        self,
+        virtual_company_id: str,
+    ) -> Optional[Family]:
+        for family in self.families.values():
+            if family.alive and family.virtual_company_id == virtual_company_id:
+                return family
+        return None
+
+    def get_intelligence_assignment(
+        self,
+        family_id: str,
+    ) -> Optional[Dict[str, Optional[str]]]:
+        family = self.get_family(family_id)
+        if family is None:
+            return None
+        return {
+            "family_id": family.family_id,
+            "virtual_company_id": family.virtual_company_id,
+            "real_company_id": family.real_company_id,
+        }
 
     # ========================================================
     # TRANSFERÊNCIA DE CONHECIMENTO
@@ -681,6 +766,10 @@ class FamilyEngine:
                 "families",
                 [],
             ):
+
+                # Compatibilidade retroactiva: estados V01 não tinham estes campos.
+                data.setdefault("virtual_company_id", None)
+                data.setdefault("real_company_id", None)
 
                 family = Family(
                     **data
