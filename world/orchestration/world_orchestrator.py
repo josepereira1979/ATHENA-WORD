@@ -20,6 +20,19 @@ class WorldOrchestrator:
             raise ValueError("name e processor válidos são obrigatórios.")
         self.processors[name] = processor
 
+    def register_engine(self, name: str, engine: Any) -> bool:
+        process_tick = getattr(engine, "process_tick", None)
+        if not callable(process_tick):
+            return False
+        self.register_processor(name, lambda world_date: process_tick(world_date))
+        return True
+
+    def register_engines(self, engines: Dict[str, Any]) -> Dict[str, bool]:
+        return {name: self.register_engine(name, engine) for name, engine in engines.items()}
+
+    def get_processor_names(self) -> list[str]:
+        return list(self.processors.keys())
+
     def run_cycle(self) -> Dict[str, Any]:
         state = self.world_core.tick_once()
         world_date = state["world_date"]
