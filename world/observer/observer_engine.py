@@ -155,6 +155,7 @@ class ObserverEngine:
         world_date: Optional[str] = None,
         tick: int = 0,
         state_file: Optional[Path] = None,
+        auto_load: bool = True,
     ):
         DATA_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -167,6 +168,8 @@ class ObserverEngine:
             world_date=world_date,
             tick=tick,
         )
+        if auto_load:
+            self.load()
 
     # ==========================================================
     # INITIALIZATION
