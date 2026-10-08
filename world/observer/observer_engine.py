@@ -244,6 +244,54 @@ class ObserverEngine:
         return observation
 
     # ==========================================================
+    # ==========================================================
+    # INGESTÃO NORMALIZADA
+    # ==========================================================
+
+    def ingest(
+        self,
+        source_engine: str,
+        subject_id: str,
+        subject_type: str,
+        metric: str,
+        value: float,
+        previous_value: Optional[float] = None,
+        world_date: Optional[str] = None,
+        tick: Optional[int] = None,
+    ) -> Observation:
+        """Entrada única para dados normalizados vindos de outros engines."""
+        return self.observe(
+            source_engine=source_engine,
+            subject_id=subject_id,
+            subject_type=subject_type,
+            metric=metric,
+            value=value,
+            previous_value=previous_value,
+            world_date=world_date,
+            tick=tick,
+        )
+
+    def ingest_batch(
+        self,
+        observations: List[Dict],
+        world_date: Optional[str] = None,
+        tick: Optional[int] = None,
+    ) -> List[Observation]:
+        """Ingere várias observações normalizadas."""
+        return [
+            self.ingest(
+                source_engine=item["source_engine"],
+                subject_id=item["subject_id"],
+                subject_type=item["subject_type"],
+                metric=item["metric"],
+                value=item["value"],
+                previous_value=item.get("previous_value"),
+                world_date=world_date,
+                tick=tick,
+            )
+            for item in observations
+        ]
+
     # ANOMALIES
     # ==========================================================
 
