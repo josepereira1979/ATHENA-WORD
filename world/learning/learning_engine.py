@@ -891,6 +891,23 @@ class LearningEngine:
     # TICK
     # ========================================================
 
+    def learn_from_validated_predictions(self, predictions, world_date: Optional[str] = None) -> List[Experience]:
+        self._require_state()
+        existing = {e.description.split("PREDICTION_ID:", 1)[1].split("|", 1)[0] for e in self.state.experiences.values() if "PREDICTION_ID:" in e.description}
+        learned = []
+        for prediction in predictions or []:
+            pid = getattr(prediction, "prediction_id", "")
+            if not pid or pid in existing:
+                continue
+            exp = self.learn_from_prediction(prediction, world_date=world_date)
+            if exp is not None:
+                exp.description = f"PREDICTION_ID:{pid}|HYPOTHESIS_ID:{getattr(prediction, 'source_hypothesis_id', None)}|{exp.description}"
+                self.state.experiences[exp.experience_id] = exp
+                self._save()
+                learned.append(exp)
+                existing.add(pid)
+        return learned
+
     def process_tick(
         self,
         world_date: str,
