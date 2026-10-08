@@ -40,33 +40,30 @@ class WorldRuntime:
         auto_load: bool = True,
     ) -> None:
         self.world_core = world_core or WorldCore()
-        self.state_dir = Path(state_dir) if state_dir else None
-
-        def sf(name: str) -> Path | None:
-            return self.state_dir / name if self.state_dir else None
+        self.state_dir = Path(state_dir) if state_dir else Path(__file__).resolve().parents[2] / "data"\n\n        def sf(name: str) -> Path:\n            return self.state_dir / name
 
         self.engines: Dict[str, Any] = {
-            "AGENT": AgentEngine(state_file=sf("agents_state.json") or AgentEngine().state_file, auto_load=auto_load),
-            "FAMILY": FamilyEngine(state_file=sf("families_state.json") or FamilyEngine().state_file, auto_load=auto_load),
-            "COMPANY": CompanyEngine(state_file=sf("companies_state.json") or CompanyEngine().state_file, auto_load=auto_load),
-            "ECONOMY": EconomyEngine(state_file=sf("economy_state.json") or EconomyEngine().state_file, auto_load=auto_load),
-            "RESOURCE": ResourceEngine(state_file=sf("resources_state.json") or ResourceEngine().state_file),
-            "INFRASTRUCTURE": InfrastructureEngine(state_file=sf("infrastructure_state.json") or InfrastructureEngine().state_file),
-            "MARKET": MarketEngine(state_file=sf("market_state.json") or MarketEngine().state_file),
-            "FINANCIAL": FinancialEngine(state_file=sf("financial_state.json") or FinancialEngine().state_file),
-            "EVENT": EventEngine(state_file=sf("events_state.json") or EventEngine().state_file),
-            "OBSERVER": ObserverEngine(state_file=sf("observer_state.json") or ObserverEngine().state_file),
-            "LEARNING": LearningEngine(state_file=sf("learning_state.json") or LearningEngine().state_file),
+            "AGENT": AgentEngine(state_file=sf("agents_state.json"), auto_load=auto_load),
+            "FAMILY": FamilyEngine(state_file=sf("families_state.json"), auto_load=auto_load),
+            "COMPANY": CompanyEngine(state_file=sf("companies_state.json"), auto_load=auto_load),
+            "ECONOMY": EconomyEngine(state_file=sf("economy_state.json"), auto_load=auto_load),
+            "RESOURCE": ResourceEngine(state_file=sf("resources_state.json")),
+            "INFRASTRUCTURE": InfrastructureEngine(state_file=sf("infrastructure_state.json")),
+            "MARKET": MarketEngine(state_file=sf("market_state.json")),
+            "FINANCIAL": FinancialEngine(state_file=sf("financial_state.json")),
+            "EVENT": EventEngine(state_file=sf("events_state.json")),
+            "OBSERVER": ObserverEngine(state_file=sf("observer_state.json")),
+            "LEARNING": LearningEngine(state_file=sf("learning_state.json")),
             "REALITY_BRIDGE": RealityBridgeEngine(
                 world_date=self.world_core.state["world_date"],
                 tick=self.world_core.state["tick"],
-                state_file=sf("reality_bridge_state.json") or RealityBridgeEngine().state_file,
-                universe=RealCompanyUniverse(state_file=sf("real_company_universe_state.json") or RealCompanyUniverse().state_file),
+                state_file=sf("reality_bridge_state.json"),
+                universe=RealCompanyUniverse(state_file=sf("real_company_universe_state.json")),
             ),
         }
 
         self.prediction_engine = PredictionEngine(
-            state_file=sf("prediction_state.json") or PredictionEngine().state_file,
+            state_file=sf("prediction_state.json"),
             auto_load=auto_load,
         )
 
