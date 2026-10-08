@@ -8,7 +8,7 @@ from world.orchestration.world_runtime import WorldRuntime
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="ATHENA WORLD control CLI")
-    parser.add_argument("command", choices=("status", "integrity", "preview", "readiness", "prepare", "cycle"))
+    parser.add_argument("command", choices=("status", "integrity", "preview", "readiness", "prepare", "finalize", "cycle"))
     parser.add_argument("--cycles", type=int, default=1)
     parser.add_argument("--limit", type=int, default=10)
     args = parser.parse_args()
@@ -24,6 +24,8 @@ def main() -> int:
         result = runtime.launch_readiness()
     elif args.command == "prepare":
         result = runtime.prepare_world(allocate=False, cycles=0)
+    elif args.command == "finalize":
+        result = runtime.finalize_global_world()
     else:
         result = runtime.run_cycles(max(1, args.cycles))
 
