@@ -22,8 +22,8 @@ def test_census_counts_capacity(tmp_path):
     company = universe.create_company("Census Corp", country="US", sector="TECH")
     universe.add_listing(company.real_company_id, "NASDAQ", "CNS", country="US", primary=True)
 
-    runtime.engines["FAMILY"].create_family("Family A", "2027-01-01", ["A1", "A2"])
-    runtime.engines["FAMILY"].create_family("Family B", "2027-01-01", ["B1", "B2"])
+    runtime.engines["FAMILY"].create_family("2027-01-01", "Family A")
+    runtime.engines["FAMILY"].create_family("2027-01-01", "Family B")
 
     census = GlobalMarketCensus(runtime)
     result = census.build()
