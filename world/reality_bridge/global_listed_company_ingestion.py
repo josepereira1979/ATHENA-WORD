@@ -130,4 +130,10 @@ class GlobalListedCompanyIngestion:
             )
             created_listings += 1
 
+        return {
+            "created_companies": created_companies,
+            "created_listings": created_listings,
+            "skipped": skipped,
+        }
+
 
