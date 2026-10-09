@@ -72,7 +72,7 @@ class CorporateNetworkEngine:
         return row
 
     def get_relationships(self, company_id=None, relationship_type=None, status=None) -> List[CorporateRelationship]:
-        relation_type = relationship_type.upper() if relation_type else None
+        relation_type = relationship_type.upper() if relationship_type else None
         wanted_status = status.upper() if status else None
         return [row for row in self.relationships.values()
                 if row.active
