@@ -84,6 +84,16 @@ As relações devem conter:
 
 Relações inferidas devem continuar marcadas como INFERRED/PROBABLE e nunca ser apresentadas como factos confirmados.
 
+## Sobrevivência e investigação familiar
+
+Cada família mantém reservas de comida/água, saúde, energia, abrigo, ferramentas e nível de evolução. O Survival Engine consome recursos por ciclo. Recursos adicionais só podem ser desbloqueados por uma avaliação explícita com evidência e previsões validadas; observações sem validação não contam como sucesso. Os dados de sobrevivência são persistidos no estado da família, com compatibilidade retroactiva para estados antigos.
+
+Os agentes recebem funções de investigação (ANALYST / CONTRARIAN) e contadores de evidência e previsões. O Reality Bridge regista a fonte declarada de cada observação; a etiqueta de uma fonte, por si só, não prova que exista uma sessão live.
+
+## Estado da ligação ao mundo real
+
+O adaptador actual não é uma ligação live. `connected=false` e `live_connection_verified=false` são os valores esperados até ser configurado e testado um fornecedor externo. `readiness` distingue prontidão estrutural de `live_data_ready`. Não anunciar a WORLD como ligada ao mercado apenas porque existem empresas/listings no universo.
+
 ## Princípio de segurança
 
 A ATHENA WORLD não envia ordens de mercado.
