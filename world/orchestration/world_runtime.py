@@ -304,7 +304,7 @@ class WorldRuntime:
         return {"sources": self.real_world_sources.list_sources(), "connection": self.real_world_connection.status()}
 
     def finalize_global_world(self) -> Dict[str, Any]:
-        return self.global_world_finalizer.finalize(self.world_core.state['world_date'])
+        return self.global_world_finalizer.finalize(self.world_core.state.world_date)
 
     def launch_readiness(self) -> Dict[str, Any]:
         return self.launch_controller.readiness()
