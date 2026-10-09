@@ -17,8 +17,20 @@ class WorldLaunchController:
         integrity = self.runtime.world_integrity()
         capacity = census["unassigned_company_capacity"]
         families = census["unassigned_families"]
+        connection = self.runtime.real_world_connection.status()
+        structural_ready = capacity >= families and integrity["status"] == "HEALTHY"
+        live_data_ready = bool(connection.get("live_connection_verified", False))
         return {
-            "ready": capacity >= families and integrity["status"] == "HEALTHY",
+            "ready": structural_ready,
+            "structural_ready": structural_ready,
+            "live_data_ready": live_data_ready,
+            "readiness_mode": "LIVE_DATA_VERIFIED" if live_data_ready else "STRUCTURE_READY_AWAITING_LIVE_DATA",
+            "connection": {
+                "connected": bool(connection.get("connected", False)),
+                "live_connection_verified": live_data_ready,
+                "adapter_ready": bool(connection.get("adapter_ready", False)),
+                "mode": connection.get("mode", "UNKNOWN"),
+            },
             "capacity": capacity,
             "families_to_assign": families,
             "integrity": integrity,
