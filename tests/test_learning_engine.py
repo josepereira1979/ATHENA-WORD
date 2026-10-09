@@ -128,3 +128,58 @@ def test_neutral_observation_does_not_count_as_success_or_failure(tmp_path):
     assert knowledge.experience_count == 1
     assert knowledge.successful_experiences == 0
     assert knowledge.failed_experiences == 0
+
+
+def test_world_connection_never_claims_live_without_verified_provider(tmp_path):
+    runtime = WorldRuntime(state_dir=tmp_path, auto_load=False)
+
+    connection = runtime.real_world_connection.status()
+    readiness = runtime.launch_readiness()
+
+    assert connection["connected"] is False
+    assert connection["live_connection_verified"] is False
+    assert connection["adapter_ready"] is True
+    assert connection["mode"] == "ADAPTER_READY"
+    assert readiness["live_data_ready"] is False
+    assert readiness["readiness_mode"] == "STRUCTURE_READY_AWAITING_LIVE_DATA"
+
+
+def test_real_world_connection_ingests_only_valid_company_records(tmp_path):
+    runtime = WorldRuntime(state_dir=tmp_path, auto_load=False)
+
+    result = runtime.connect_real_world(
+        [
+            {
+                "legal_name": "Evidence Test Holdings",
+                "name": "Evidence Test Holdings",
+                "country": "USA",
+                "sector": "TECHNOLOGY",
+                "industry": "SOFTWARE",
+                "ticker": "EVTH",
+                "exchange": "NASDAQ",
+                "currency": "USD",
+                "source_identity": "test:evth:001",
+            },
+            {
+                "legal_name": "Example ETF",
+                "name": "Example ETF",
+                "country": "USA",
+                "sector": "FUND",
+                "industry": "ETF",
+                "ticker": "EXETF",
+                "exchange": "NASDAQ",
+                "currency": "USD",
+                "source_identity": "test:etf:001",
+            },
+        ],
+        allocate=True,
+    )
+
+    ingestion = result["ingestion"]
+    assert ingestion["created_companies"] == 1
+    assert ingestion["created_listings"] == 1
+    assert ingestion["skipped"] == 1
+    assert result["finalization"]["closed"] is True
+    assert runtime.world_integrity()["status"] == "HEALTHY"
+    assert runtime.real_world_connection.status()["live_connection_verified"] is False
+
