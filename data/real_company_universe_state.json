@@ -1,0 +1,1086 @@
+{
+    "engine_name": "ATHENA WORLD - REAL COMPANY UNIVERSE",
+    "engine_version": "V01",
+    "companies": [
+        {
+            "real_company_id": "REAL-000001",
+            "legal_name": "NVIDIA Corporation",
+            "country": "US",
+            "sector": "TECHNOLOGY",
+            "industry": "Semiconductors",
+            "active": true,
+            "listing_ids": [
+                "LIST-000001"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000002",
+            "legal_name": "Apple Inc.",
+            "country": "US",
+            "sector": "TECHNOLOGY",
+            "industry": "Consumer Electronics",
+            "active": true,
+            "listing_ids": [
+                "LIST-000002"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000003",
+            "legal_name": "Microsoft Corporation",
+            "country": "US",
+            "sector": "TECHNOLOGY",
+            "industry": "Software",
+            "active": true,
+            "listing_ids": [
+                "LIST-000003"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000004",
+            "legal_name": "Amazon.com Inc.",
+            "country": "US",
+            "sector": "CONSUMER",
+            "industry": "Internet Retail",
+            "active": true,
+            "listing_ids": [
+                "LIST-000004"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000005",
+            "legal_name": "Alphabet Inc.",
+            "country": "US",
+            "sector": "COMMUNICATION SERVICES",
+            "industry": "Internet Content",
+            "active": true,
+            "listing_ids": [
+                "LIST-000005"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000006",
+            "legal_name": "Broadcom Inc.",
+            "country": "US",
+            "sector": "TECHNOLOGY",
+            "industry": "Semiconductors",
+            "active": true,
+            "listing_ids": [
+                "LIST-000006"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000007",
+            "legal_name": "Meta Platforms Inc.",
+            "country": "US",
+            "sector": "COMMUNICATION SERVICES",
+            "industry": "Internet Content",
+            "active": true,
+            "listing_ids": [
+                "LIST-000007"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000008",
+            "legal_name": "Tesla Inc.",
+            "country": "US",
+            "sector": "CONSUMER",
+            "industry": "Automobiles",
+            "active": true,
+            "listing_ids": [
+                "LIST-000008"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000009",
+            "legal_name": "Berkshire Hathaway Inc.",
+            "country": "US",
+            "sector": "FINANCIALS",
+            "industry": "Diversified Financials",
+            "active": true,
+            "listing_ids": [
+                "LIST-000009"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000010",
+            "legal_name": "Eli Lilly and Company",
+            "country": "US",
+            "sector": "HEALTHCARE",
+            "industry": "Pharmaceuticals",
+            "active": true,
+            "listing_ids": [
+                "LIST-000010"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000011",
+            "legal_name": "JPMorgan Chase & Co.",
+            "country": "US",
+            "sector": "FINANCIALS",
+            "industry": "Banks",
+            "active": true,
+            "listing_ids": [
+                "LIST-000011"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000012",
+            "legal_name": "Visa Inc.",
+            "country": "US",
+            "sector": "FINANCIALS",
+            "industry": "Payments",
+            "active": true,
+            "listing_ids": [
+                "LIST-000012"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000013",
+            "legal_name": "Walmart Inc.",
+            "country": "US",
+            "sector": "CONSUMER STAPLES",
+            "industry": "Retail",
+            "active": true,
+            "listing_ids": [
+                "LIST-000013"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000014",
+            "legal_name": "Exxon Mobil Corporation",
+            "country": "US",
+            "sector": "ENERGY",
+            "industry": "Oil & Gas",
+            "active": true,
+            "listing_ids": [
+                "LIST-000014"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000015",
+            "legal_name": "Johnson & Johnson",
+            "country": "US",
+            "sector": "HEALTHCARE",
+            "industry": "Pharmaceuticals",
+            "active": true,
+            "listing_ids": [
+                "LIST-000015"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000016",
+            "legal_name": "Procter & Gamble Company",
+            "country": "US",
+            "sector": "CONSUMER STAPLES",
+            "industry": "Household Products",
+            "active": true,
+            "listing_ids": [
+                "LIST-000016"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000017",
+            "legal_name": "Coca-Cola Company",
+            "country": "US",
+            "sector": "CONSUMER STAPLES",
+            "industry": "Beverages",
+            "active": true,
+            "listing_ids": [
+                "LIST-000017"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000018",
+            "legal_name": "Oracle Corporation",
+            "country": "US",
+            "sector": "TECHNOLOGY",
+            "industry": "Software",
+            "active": true,
+            "listing_ids": [
+                "LIST-000018"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000019",
+            "legal_name": "Mastercard Incorporated",
+            "country": "US",
+            "sector": "FINANCIALS",
+            "industry": "Payments",
+            "active": true,
+            "listing_ids": [
+                "LIST-000019"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000020",
+            "legal_name": "Home Depot Inc.",
+            "country": "US",
+            "sector": "CONSUMER",
+            "industry": "Home Improvement Retail",
+            "active": true,
+            "listing_ids": [
+                "LIST-000020"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000021",
+            "legal_name": "Taiwan Semiconductor Manufacturing Company Limited",
+            "country": "TW",
+            "sector": "TECHNOLOGY",
+            "industry": "Semiconductors",
+            "active": true,
+            "listing_ids": [
+                "LIST-000021"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000022",
+            "legal_name": "Samsung Electronics Co Ltd",
+            "country": "KR",
+            "sector": "TECHNOLOGY",
+            "industry": "Semiconductors",
+            "active": true,
+            "listing_ids": [
+                "LIST-000022"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000023",
+            "legal_name": "ASML Holding N.V.",
+            "country": "NL",
+            "sector": "TECHNOLOGY",
+            "industry": "Semiconductor Equipment",
+            "active": true,
+            "listing_ids": [
+                "LIST-000023"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000024",
+            "legal_name": "Novo Nordisk A/S",
+            "country": "DK",
+            "sector": "HEALTHCARE",
+            "industry": "Pharmaceuticals",
+            "active": true,
+            "listing_ids": [
+                "LIST-000024"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000025",
+            "legal_name": "SAP SE",
+            "country": "DE",
+            "sector": "TECHNOLOGY",
+            "industry": "Software",
+            "active": true,
+            "listing_ids": [
+                "LIST-000025"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000026",
+            "legal_name": "Siemens AG",
+            "country": "DE",
+            "sector": "INDUSTRIALS",
+            "industry": "Industrial Conglomerates",
+            "active": true,
+            "listing_ids": [
+                "LIST-000026"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000027",
+            "legal_name": "Schneider Electric SE",
+            "country": "FR",
+            "sector": "INDUSTRIALS",
+            "industry": "Electrical Equipment",
+            "active": true,
+            "listing_ids": [
+                "LIST-000027"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000028",
+            "legal_name": "LVMH Moet Hennessy Louis Vuitton SE",
+            "country": "FR",
+            "sector": "CONSUMER",
+            "industry": "Luxury Goods",
+            "active": true,
+            "listing_ids": [
+                "LIST-000028"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000029",
+            "legal_name": "TotalEnergies SE",
+            "country": "FR",
+            "sector": "ENERGY",
+            "industry": "Oil & Gas",
+            "active": true,
+            "listing_ids": [
+                "LIST-000029"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000030",
+            "legal_name": "Airbus SE",
+            "country": "NL",
+            "sector": "INDUSTRIALS",
+            "industry": "Aerospace & Defense",
+            "active": true,
+            "listing_ids": [
+                "LIST-000030"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000031",
+            "legal_name": "Shell plc",
+            "country": "GB",
+            "sector": "ENERGY",
+            "industry": "Oil & Gas",
+            "active": true,
+            "listing_ids": [
+                "LIST-000031"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000032",
+            "legal_name": "AstraZeneca PLC",
+            "country": "GB",
+            "sector": "HEALTHCARE",
+            "industry": "Pharmaceuticals",
+            "active": true,
+            "listing_ids": [
+                "LIST-000032"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000033",
+            "legal_name": "HSBC Holdings plc",
+            "country": "GB",
+            "sector": "FINANCIALS",
+            "industry": "Banks",
+            "active": true,
+            "listing_ids": [
+                "LIST-000033"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000034",
+            "legal_name": "Unilever PLC",
+            "country": "GB",
+            "sector": "CONSUMER STAPLES",
+            "industry": "Household Products",
+            "active": true,
+            "listing_ids": [
+                "LIST-000034"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000035",
+            "legal_name": "Rio Tinto plc",
+            "country": "GB",
+            "sector": "MATERIALS",
+            "industry": "Metals & Mining",
+            "active": true,
+            "listing_ids": [
+                "LIST-000035"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000036",
+            "legal_name": "Nestle S.A.",
+            "country": "CH",
+            "sector": "CONSUMER STAPLES",
+            "industry": "Food",
+            "active": true,
+            "listing_ids": [
+                "LIST-000036"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000037",
+            "legal_name": "Roche Holding AG",
+            "country": "CH",
+            "sector": "HEALTHCARE",
+            "industry": "Pharmaceuticals",
+            "active": true,
+            "listing_ids": [
+                "LIST-000037"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000038",
+            "legal_name": "Novartis AG",
+            "country": "CH",
+            "sector": "HEALTHCARE",
+            "industry": "Pharmaceuticals",
+            "active": true,
+            "listing_ids": [
+                "LIST-000038"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000039",
+            "legal_name": "Toyota Motor Corporation",
+            "country": "JP",
+            "sector": "CONSUMER",
+            "industry": "Automobiles",
+            "active": true,
+            "listing_ids": [
+                "LIST-000039"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000040",
+            "legal_name": "Sony Group Corporation",
+            "country": "JP",
+            "sector": "COMMUNICATION SERVICES",
+            "industry": "Entertainment",
+            "active": true,
+            "listing_ids": [
+                "LIST-000040"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000041",
+            "legal_name": "Mitsubishi UFJ Financial Group Inc.",
+            "country": "JP",
+            "sector": "FINANCIALS",
+            "industry": "Banks",
+            "active": true,
+            "listing_ids": [
+                "LIST-000041"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000042",
+            "legal_name": "Alibaba Group Holding Limited",
+            "country": "CN",
+            "sector": "CONSUMER",
+            "industry": "Internet Retail",
+            "active": true,
+            "listing_ids": [
+                "LIST-000042"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000043",
+            "legal_name": "Tencent Holdings Limited",
+            "country": "CN",
+            "sector": "COMMUNICATION SERVICES",
+            "industry": "Internet Content",
+            "active": true,
+            "listing_ids": [
+                "LIST-000043"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000044",
+            "legal_name": "ICICI Bank Limited",
+            "country": "IN",
+            "sector": "FINANCIALS",
+            "industry": "Banks",
+            "active": true,
+            "listing_ids": [
+                "LIST-000044"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000045",
+            "legal_name": "Reliance Industries Limited",
+            "country": "IN",
+            "sector": "ENERGY",
+            "industry": "Integrated Energy",
+            "active": true,
+            "listing_ids": [
+                "LIST-000045"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000046",
+            "legal_name": "Banco Santander S.A.",
+            "country": "ES",
+            "sector": "FINANCIALS",
+            "industry": "Banks",
+            "active": true,
+            "listing_ids": [
+                "LIST-000046"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000047",
+            "legal_name": "Iberdrola S.A.",
+            "country": "ES",
+            "sector": "UTILITIES",
+            "industry": "Electric Utilities",
+            "active": true,
+            "listing_ids": [
+                "LIST-000047"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000048",
+            "legal_name": "Galp Energia SGPS S.A.",
+            "country": "PT",
+            "sector": "ENERGY",
+            "industry": "Oil & Gas",
+            "active": true,
+            "listing_ids": [
+                "LIST-000048"
+            ]
+        },
+        {
+            "real_company_id": "REAL-000049",
+            "legal_name": "EDP - Energias de Portugal S.A.",
+            "country": "PT",
+            "sector": "UTILITIES",
+            "industry": "Electric Utilities",
+            "active": true,
+            "listing_ids": [
+                "LIST-000049"
+            ]
+        }
+    ],
+    "listings": [
+        {
+            "listing_id": "LIST-000001",
+            "real_company_id": "REAL-000001",
+            "exchange": "NASDAQ",
+            "ticker": "NVDA",
+            "country": "US",
+            "share_class": null,
+            "currency": "USD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000002",
+            "real_company_id": "REAL-000002",
+            "exchange": "NASDAQ",
+            "ticker": "AAPL",
+            "country": "US",
+            "share_class": null,
+            "currency": "USD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000003",
+            "real_company_id": "REAL-000003",
+            "exchange": "NASDAQ",
+            "ticker": "MSFT",
+            "country": "US",
+            "share_class": null,
+            "currency": "USD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000004",
+            "real_company_id": "REAL-000004",
+            "exchange": "NASDAQ",
+            "ticker": "AMZN",
+            "country": "US",
+            "share_class": null,
+            "currency": "USD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000005",
+            "real_company_id": "REAL-000005",
+            "exchange": "NASDAQ",
+            "ticker": "GOOGL",
+            "country": "US",
+            "share_class": null,
+            "currency": "USD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000006",
+            "real_company_id": "REAL-000006",
+            "exchange": "NASDAQ",
+            "ticker": "AVGO",
+            "country": "US",
+            "share_class": null,
+            "currency": "USD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000007",
+            "real_company_id": "REAL-000007",
+            "exchange": "NASDAQ",
+            "ticker": "META",
+            "country": "US",
+            "share_class": null,
+            "currency": "USD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000008",
+            "real_company_id": "REAL-000008",
+            "exchange": "NASDAQ",
+            "ticker": "TSLA",
+            "country": "US",
+            "share_class": null,
+            "currency": "USD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000009",
+            "real_company_id": "REAL-000009",
+            "exchange": "NYSE",
+            "ticker": "BRK.B",
+            "country": "US",
+            "share_class": null,
+            "currency": "USD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000010",
+            "real_company_id": "REAL-000010",
+            "exchange": "NYSE",
+            "ticker": "LLY",
+            "country": "US",
+            "share_class": null,
+            "currency": "USD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000011",
+            "real_company_id": "REAL-000011",
+            "exchange": "NYSE",
+            "ticker": "JPM",
+            "country": "US",
+            "share_class": null,
+            "currency": "USD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000012",
+            "real_company_id": "REAL-000012",
+            "exchange": "NYSE",
+            "ticker": "V",
+            "country": "US",
+            "share_class": null,
+            "currency": "USD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000013",
+            "real_company_id": "REAL-000013",
+            "exchange": "NYSE",
+            "ticker": "WMT",
+            "country": "US",
+            "share_class": null,
+            "currency": "USD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000014",
+            "real_company_id": "REAL-000014",
+            "exchange": "NYSE",
+            "ticker": "XOM",
+            "country": "US",
+            "share_class": null,
+            "currency": "USD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000015",
+            "real_company_id": "REAL-000015",
+            "exchange": "NYSE",
+            "ticker": "JNJ",
+            "country": "US",
+            "share_class": null,
+            "currency": "USD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000016",
+            "real_company_id": "REAL-000016",
+            "exchange": "NYSE",
+            "ticker": "PG",
+            "country": "US",
+            "share_class": null,
+            "currency": "USD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000017",
+            "real_company_id": "REAL-000017",
+            "exchange": "NYSE",
+            "ticker": "KO",
+            "country": "US",
+            "share_class": null,
+            "currency": "USD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000018",
+            "real_company_id": "REAL-000018",
+            "exchange": "NYSE",
+            "ticker": "ORCL",
+            "country": "US",
+            "share_class": null,
+            "currency": "USD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000019",
+            "real_company_id": "REAL-000019",
+            "exchange": "NYSE",
+            "ticker": "MA",
+            "country": "US",
+            "share_class": null,
+            "currency": "USD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000020",
+            "real_company_id": "REAL-000020",
+            "exchange": "NYSE",
+            "ticker": "HD",
+            "country": "US",
+            "share_class": null,
+            "currency": "USD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000021",
+            "real_company_id": "REAL-000021",
+            "exchange": "TWSE",
+            "ticker": "2330",
+            "country": "TW",
+            "share_class": null,
+            "currency": "TWD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000022",
+            "real_company_id": "REAL-000022",
+            "exchange": "KRX",
+            "ticker": "005930",
+            "country": "KR",
+            "share_class": null,
+            "currency": "KRW",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000023",
+            "real_company_id": "REAL-000023",
+            "exchange": "Euronext Amsterdam",
+            "ticker": "ASML",
+            "country": "NL",
+            "share_class": null,
+            "currency": "EUR",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000024",
+            "real_company_id": "REAL-000024",
+            "exchange": "Nasdaq Copenhagen",
+            "ticker": "NOVO-B",
+            "country": "DK",
+            "share_class": null,
+            "currency": "DKK",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000025",
+            "real_company_id": "REAL-000025",
+            "exchange": "XETRA",
+            "ticker": "SAP",
+            "country": "DE",
+            "share_class": null,
+            "currency": "EUR",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000026",
+            "real_company_id": "REAL-000026",
+            "exchange": "XETRA",
+            "ticker": "SIE",
+            "country": "DE",
+            "share_class": null,
+            "currency": "EUR",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000027",
+            "real_company_id": "REAL-000027",
+            "exchange": "Euronext Paris",
+            "ticker": "SU",
+            "country": "FR",
+            "share_class": null,
+            "currency": "EUR",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000028",
+            "real_company_id": "REAL-000028",
+            "exchange": "Euronext Paris",
+            "ticker": "MC",
+            "country": "FR",
+            "share_class": null,
+            "currency": "EUR",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000029",
+            "real_company_id": "REAL-000029",
+            "exchange": "Euronext Paris",
+            "ticker": "TTE",
+            "country": "FR",
+            "share_class": null,
+            "currency": "EUR",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000030",
+            "real_company_id": "REAL-000030",
+            "exchange": "Euronext Paris",
+            "ticker": "AIR",
+            "country": "NL",
+            "share_class": null,
+            "currency": "EUR",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000031",
+            "real_company_id": "REAL-000031",
+            "exchange": "London Stock Exchange",
+            "ticker": "SHEL",
+            "country": "GB",
+            "share_class": null,
+            "currency": "GBP",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000032",
+            "real_company_id": "REAL-000032",
+            "exchange": "London Stock Exchange",
+            "ticker": "AZN",
+            "country": "GB",
+            "share_class": null,
+            "currency": "GBP",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000033",
+            "real_company_id": "REAL-000033",
+            "exchange": "London Stock Exchange",
+            "ticker": "HSBA",
+            "country": "GB",
+            "share_class": null,
+            "currency": "GBP",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000034",
+            "real_company_id": "REAL-000034",
+            "exchange": "London Stock Exchange",
+            "ticker": "ULVR",
+            "country": "GB",
+            "share_class": null,
+            "currency": "GBP",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000035",
+            "real_company_id": "REAL-000035",
+            "exchange": "London Stock Exchange",
+            "ticker": "RIO",
+            "country": "GB",
+            "share_class": null,
+            "currency": "GBP",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000036",
+            "real_company_id": "REAL-000036",
+            "exchange": "SIX Swiss Exchange",
+            "ticker": "NESN",
+            "country": "CH",
+            "share_class": null,
+            "currency": "CHF",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000037",
+            "real_company_id": "REAL-000037",
+            "exchange": "SIX Swiss Exchange",
+            "ticker": "ROG",
+            "country": "CH",
+            "share_class": null,
+            "currency": "CHF",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000038",
+            "real_company_id": "REAL-000038",
+            "exchange": "SIX Swiss Exchange",
+            "ticker": "NOVN",
+            "country": "CH",
+            "share_class": null,
+            "currency": "CHF",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000039",
+            "real_company_id": "REAL-000039",
+            "exchange": "Tokyo Stock Exchange",
+            "ticker": "7203",
+            "country": "JP",
+            "share_class": null,
+            "currency": "JPY",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000040",
+            "real_company_id": "REAL-000040",
+            "exchange": "Tokyo Stock Exchange",
+            "ticker": "6758",
+            "country": "JP",
+            "share_class": null,
+            "currency": "JPY",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000041",
+            "real_company_id": "REAL-000041",
+            "exchange": "Tokyo Stock Exchange",
+            "ticker": "8306",
+            "country": "JP",
+            "share_class": null,
+            "currency": "JPY",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000042",
+            "real_company_id": "REAL-000042",
+            "exchange": "Hong Kong Stock Exchange",
+            "ticker": "9988",
+            "country": "CN",
+            "share_class": null,
+            "currency": "HKD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000043",
+            "real_company_id": "REAL-000043",
+            "exchange": "Hong Kong Stock Exchange",
+            "ticker": "700",
+            "country": "CN",
+            "share_class": null,
+            "currency": "HKD",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000044",
+            "real_company_id": "REAL-000044",
+            "exchange": "NSE India",
+            "ticker": "ICICIBANK",
+            "country": "IN",
+            "share_class": null,
+            "currency": "INR",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000045",
+            "real_company_id": "REAL-000045",
+            "exchange": "NSE India",
+            "ticker": "RELIANCE",
+            "country": "IN",
+            "share_class": null,
+            "currency": "INR",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000046",
+            "real_company_id": "REAL-000046",
+            "exchange": "Bolsa de Madrid",
+            "ticker": "SAN",
+            "country": "ES",
+            "share_class": null,
+            "currency": "EUR",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000047",
+            "real_company_id": "REAL-000047",
+            "exchange": "Bolsa de Madrid",
+            "ticker": "IBE",
+            "country": "ES",
+            "share_class": null,
+            "currency": "EUR",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000048",
+            "real_company_id": "REAL-000048",
+            "exchange": "Euronext Lisbon",
+            "ticker": "GALP",
+            "country": "PT",
+            "share_class": null,
+            "currency": "EUR",
+            "primary": true,
+            "active": true
+        },
+        {
+            "listing_id": "LIST-000049",
+            "real_company_id": "REAL-000049",
+            "exchange": "Euronext Lisbon",
+            "ticker": "EDP",
+            "country": "PT",
+            "share_class": null,
+            "currency": "EUR",
+            "primary": true,
+            "active": true
+        }
+    ]
+}

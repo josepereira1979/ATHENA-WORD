@@ -142,6 +142,9 @@ class Company:
 
     updated_at: str = ""
 
+    # Identidade canónica da empresa no mundo real.
+    real_company_id: Optional[str] = None
+
 
 # ============================================================
 # COMPANY ENGINE
@@ -261,6 +264,7 @@ class CompanyEngine:
             generation=int(generation),
             created_at=now,
             updated_at=now,
+            real_company_id=None,
         )
 
         self.companies[
@@ -270,6 +274,42 @@ class CompanyEngine:
         self.save()
 
         return company
+
+    # ========================================================
+    # IDENTIDADE REAL
+    # ========================================================
+
+    def link_real_company(
+        self,
+        company_id: str,
+        real_company_id: str,
+    ) -> bool:
+        """Liga uma empresa virtual a uma identidade real canónica."""
+        company = self.get_company(company_id)
+        if company is None or not real_company_id:
+            return False
+
+        for other in self.companies.values():
+            if (
+                other.company_id != company_id
+                and other.status == "ACTIVE"
+                and other.real_company_id == real_company_id
+            ):
+                return False
+
+        company.real_company_id = real_company_id
+        company.updated_at = datetime.now().isoformat()
+        self.save()
+        return True
+
+    def get_company_by_real_id(
+        self,
+        real_company_id: str,
+    ) -> Optional[Company]:
+        for company in self.companies.values():
+            if company.real_company_id == real_company_id:
+                return company
+        return None
 
     # ========================================================
     # PRODUTO
@@ -1077,6 +1117,11 @@ class CompanyEngine:
                 "companies",
                 [],
             ):
+
+                # Compatibilidade retroactiva com estados V01.
+                data.setdefault("real_company_id", None)
+
+                data.setdefault("real_company_id", None)
 
                 company = Company(
                     **data

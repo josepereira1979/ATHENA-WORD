@@ -133,6 +133,15 @@ class Agent:
 
     total_ticks_processed: int
 
+    # Estado de investigação; evidência só aumenta quando há dados verificáveis.
+    research_role: str = "GENERALIST"
+    research_focus: Optional[str] = None
+    evidence_collected: int = 0
+    hypotheses_proposed: int = 0
+    hypotheses_challenged: int = 0
+    validated_predictions: int = 0
+    prediction_accuracy: float = 0.0
+
 
 # ============================================================
 # AGENT ENGINE
@@ -1036,6 +1045,13 @@ class AgentEngine:
                     0,
                 )
             ),
+            research_role=data.get("research_role", "GENERALIST"),
+            research_focus=data.get("research_focus"),
+            evidence_collected=int(data.get("evidence_collected", 0)),
+            hypotheses_proposed=int(data.get("hypotheses_proposed", 0)),
+            hypotheses_challenged=int(data.get("hypotheses_challenged", 0)),
+            validated_predictions=int(data.get("validated_predictions", 0)),
+            prediction_accuracy=float(data.get("prediction_accuracy", 0.0)),
         )
 
     def save(self) -> None:

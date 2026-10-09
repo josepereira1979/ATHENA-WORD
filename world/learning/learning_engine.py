@@ -68,7 +68,7 @@ class Experience:
 
     outcome: str
 
-    success: bool
+    success: Optional[bool]
 
     impact: float = 0.0
 
@@ -294,7 +294,7 @@ class LearningEngine:
         event_type: str,
         description: str,
         outcome: str,
-        success: bool,
+        success: Optional[bool],
         impact: float = 0.0,
         learning_value: float = 0.1,
         knowledge_domain: str = "GENERAL",
@@ -317,7 +317,7 @@ class LearningEngine:
             event_type=event_type,
             description=description,
             outcome=outcome,
-            success=bool(success),
+            success=(None if success is None else bool(success)),
             impact=self._clamp(
                 impact,
                 -1.0,
@@ -338,9 +338,9 @@ class LearningEngine:
             experience_id
         ] = experience
 
-        if experience.success:
+        if experience.success is True:
             self.state.total_successes += 1
-        else:
+        elif experience.success is False:
             self.state.total_failures += 1
 
         self._learn_from_experience(
@@ -401,9 +401,9 @@ class LearningEngine:
 
         record.experience_count += 1
 
-        if experience.success:
+        if experience.success is True:
             record.successful_experiences += 1
-        else:
+        elif experience.success is False:
             record.failed_experiences += 1
 
         gain = (
@@ -416,7 +416,7 @@ class LearningEngine:
 
         # Falhas também ensinam.
         # Uma falha não significa ausência de aprendizagem.
-        if not experience.success:
+        if experience.success is False:
             gain *= 1.15
 
         record.level = self._clamp(
@@ -431,7 +431,7 @@ class LearningEngine:
 
         # Se uma estratégia foi indicada,
         # atualiza a sua eficácia.
-        if experience.strategy:
+        if experience.strategy and experience.success is not None:
 
             self._update_strategy_from_experience(
                 owner_id=experience.owner_id,
@@ -440,6 +440,53 @@ class LearningEngine:
                 domain=experience.knowledge_domain,
                 success=experience.success,
             )
+
+    def learn_from_prediction(
+        self,
+        prediction,
+        world_date: Optional[str] = None,
+    ) -> Optional[Experience]:
+        """Converte uma previsão validada numa experiência de aprendizagem."""
+        self._require_state()
+        if prediction is None or prediction.status != "VALIDATED":
+            return None
+        if prediction.outcome not in {"CORRECT", "WRONG", "PARTIAL"}:
+            return None
+
+        learning_value = {
+            "CORRECT": 0.10,
+            "PARTIAL": 0.08,
+            "WRONG": 0.12,
+        }[prediction.outcome]
+
+        impact = {
+            "CORRECT": 0.50,
+            "PARTIAL": 0.20,
+            "WRONG": -0.50,
+        }[prediction.outcome]
+
+        success = prediction.outcome == "CORRECT"
+        date_value = world_date or prediction.actual_date or prediction.horizon_end
+        lesson = {
+            "CORRECT": "A hipótese e a previsão mostraram capacidade preditiva.",
+            "PARTIAL": "A direção ou magnitude aproximou-se da realidade, mas a previsão precisa de calibração.",
+            "WRONG": "A previsão falhou; o erro deve alimentar a aprendizagem e revisão da hipótese.",
+        }[prediction.outcome]
+
+        return self.record_experience(
+            owner_id=prediction.owner_id,
+            owner_type=prediction.owner_type,
+            world_date=date_value,
+            event_type="PREDICTION_VALIDATION",
+            description=prediction.statement,
+            outcome=prediction.outcome,
+            success=success,
+            impact=impact,
+            learning_value=learning_value,
+            knowledge_domain=prediction.metric,
+            strategy="",
+            lesson=lesson,
+        )
 
     # ========================================================
     # ESTRATÉGIAS
@@ -843,6 +890,23 @@ class LearningEngine:
     # ========================================================
     # TICK
     # ========================================================
+
+    def learn_from_validated_predictions(self, predictions, world_date: Optional[str] = None) -> List[Experience]:
+        self._require_state()
+        existing = {e.description.split("PREDICTION_ID:", 1)[1].split("|", 1)[0] for e in self.state.experiences.values() if "PREDICTION_ID:" in e.description}
+        learned = []
+        for prediction in predictions or []:
+            pid = getattr(prediction, "prediction_id", "")
+            if not pid or pid in existing:
+                continue
+            exp = self.learn_from_prediction(prediction, world_date=world_date)
+            if exp is not None:
+                exp.description = f"PREDICTION_ID:{pid}|HYPOTHESIS_ID:{getattr(prediction, 'source_hypothesis_id', None)}|{exp.description}"
+                self.state.experiences[exp.experience_id] = exp
+                self._save()
+                learned.append(exp)
+                existing.add(pid)
+        return learned
 
     def process_tick(
         self,
