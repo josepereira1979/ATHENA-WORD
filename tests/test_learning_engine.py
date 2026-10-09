@@ -81,12 +81,15 @@ def test_real_observation_validates_prediction_and_teaches_failure(tmp_path):
         metric="REVENUE",
         value=130.0,
         observation_date="2026-10-03",
-        source="TEST_FIXTURE",
+        source="SEC_EDGAR",
         unit="USD",
     )
     validated = runtime.prediction_engine.get_prediction(prediction.prediction_id)
     assert validated.status == "VALIDATED"
     assert validated.outcome == "WRONG"
+    assert validated.validation_source == "SEC_EDGAR"
+    assert validated.validation_data_type == "REAL"
+    assert validated.validation_observation_id is not None
 
     learned = runtime.engines["LEARNING"].learn_from_validated_predictions(
         runtime.prediction_engine.get_all_predictions(),
