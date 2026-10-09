@@ -54,8 +54,8 @@ class WorldRuntime:
         state_dir: Path | None = None,
         auto_load: bool = True,
     ) -> None:
-        self.world_core = world_core or WorldCore()
         self.state_dir = Path(state_dir) if state_dir else Path(__file__).resolve().parents[2] / "data"
+        self.world_core = world_core or WorldCore(state_file=self.state_dir / "world_state.json")
 
         def sf(name: str) -> Path:
             return self.state_dir / name
@@ -73,8 +73,8 @@ class WorldRuntime:
             "OBSERVER": ObserverEngine(state_file=sf("observer_state.json")),
             "LEARNING": LearningEngine(state_file=sf("learning_state.json")),
             "REALITY_BRIDGE": RealityBridgeEngine(
-                world_date=self.world_core.state["world_date"],
-                tick=self.world_core.state["tick"],
+                world_date=self.world_core.state.world_date,
+                tick=self.world_core.state.tick,
                 state_file=sf("reality_bridge_state.json"),
                 universe=RealCompanyUniverse(state_file=sf("real_company_universe_state.json")),
             ),
@@ -87,7 +87,7 @@ class WorldRuntime:
         if auto_load and learning_state_file.exists():
             learning_engine.load()
         else:
-            learning_engine.initialize(str(self.world_core.state["world_date"]))
+            learning_engine.initialize(str(self.world_core.state.world_date))
 
         self.corporate_network = CorporateNetworkEngine(
             state_file=sf("corporate_network_state.json"),
@@ -158,7 +158,7 @@ class WorldRuntime:
         )
 
     def _process_intelligence_cycle(self, world_date: str) -> None:
-        tick = int(self.world_core.state["tick"])
+        tick = int(self.world_core.state.tick)
         observer = self.engines["OBSERVER"]
         observer.process_tick(world_date, tick)
 
@@ -247,7 +247,7 @@ class WorldRuntime:
             value=float(value),
             previous_value=float(previous.value) if previous is not None else None,
             world_date=observation_date,
-            tick=int(self.world_core.state["tick"]),
+            tick=int(self.world_core.state.tick),
         )
         for prediction in self.prediction_engine.get_open_predictions():
             if prediction.subject_id == mapping.virtual_company_id and prediction.metric == metric:
@@ -347,7 +347,7 @@ class WorldRuntime:
     def expand_real_company_world(self, limit: int | None = None) -> Dict[str, Any]:
         """Cria empresas virtuais e atribui famílias, mantendo relação 1:1."""
         return self.family_company_expansion.expand(
-            world_date=self.world_core.state["world_date"],
+            world_date=self.world_core.state.world_date,
             limit=limit,
         )
 
@@ -367,7 +367,7 @@ class WorldRuntime:
             origin_company_id=origin_company_id,
             direction=direction,
             strength=strength,
-            world_date=world_date or self.world_core.state["world_date"],
+            world_date=world_date or self.world_core.state.world_date,
             max_depth=max_depth,
             min_strength=min_strength,
             source_event_id=source_event_id,
@@ -585,7 +585,7 @@ class WorldRuntime:
                 statement=statement,
                 confidence=min(0.90, 0.50 + 0.05 * len(positive)),
                 world_date=world_date,
-                tick=int(self.world_core.state["tick"]),
+                tick=int(self.world_core.state.tick),
             )
 
             learning.record_experience(
@@ -709,7 +709,7 @@ class WorldRuntime:
         if existing_mapping is not None and existing_mapping.real_company_id != real_company_id:
             raise ValueError("A empresa virtual já possui outro mapping real.")
 
-        now = world_date or self.world_core.state["world_date"]
+        now = world_date or self.world_core.state.world_date
 
         if existing_mapping is None:
             bridge.create_mapping(
