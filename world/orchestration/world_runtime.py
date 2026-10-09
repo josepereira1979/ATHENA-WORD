@@ -80,6 +80,15 @@ class WorldRuntime:
             ),
         }
 
+        # LearningEngine has explicit persistence semantics and does not auto-load
+        # in its constructor. Prepare it before any runtime cycle.
+        learning_engine = self.engines["LEARNING"]
+        learning_state_file = sf("learning_state.json")
+        if auto_load and learning_state_file.exists():
+            learning_engine.load()
+        else:
+            learning_engine.initialize(str(self.world_core.state["world_date"]))
+
         self.corporate_network = CorporateNetworkEngine(
             state_file=sf("corporate_network_state.json"),
             universe=self.engines["REALITY_BRIDGE"].universe,
