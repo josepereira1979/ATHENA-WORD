@@ -2,6 +2,8 @@
 
 ## Architectural status
 
+**Important operational distinction:** the architecture and adapter are prepared, but no live external data session is currently verified. `RealWorldConnection.status()` must report `connected=false`, `live_connection_verified=false`, and `mode=ADAPTER_READY` until a real provider adapter has completed a successful connection and data-validation handshake. A populated company universe alone is not proof of a live feed.
+
 The project is designed so that the number of families is not fixed.
 
 The target population is one family for every active operating real company with at least one active stock-market listing in the connected universe.
@@ -51,4 +53,4 @@ The WORLD does not place market orders. It observes, simulates, investigates, pr
 
 ## Definition of done
 
-The architecture is closed when the external real-world source feed is connected and its universe passes the integrity report. Remaining work is data synchronization, not redesign of the WORLD architecture.
+The architecture is **not yet operationally connected to a live external feed**. Completion requires implementing/configuring a provider adapter, verifying source identity and timestamps, successfully ingesting fresh observations/events, and passing the integrity and provenance checks. Until then, readiness must say `STRUCTURE_READY_AWAITING_LIVE_DATA`; do not claim live connectivity.
