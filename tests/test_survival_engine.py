@@ -46,6 +46,14 @@ def test_only_evidence_backed_validated_research_unlocks_resources(tmp_path):
     engine = SurvivalEngine(families, agents)
     initial_food = family.food_reserve
     initial_tools = family.tools_level
+    for index in range(5):
+        engine.record_real_evidence(
+            real_company_id="REAL-001",
+            metric="REVENUE",
+            source="SEC_EDGAR",
+            observation_id=f"OBS-RESEARCH-{index}",
+            world_date="2026-10-09",
+        )
 
     try:
         engine.assess_research(
