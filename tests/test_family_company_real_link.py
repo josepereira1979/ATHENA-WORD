@@ -8,7 +8,7 @@ from world.companies.company_engine import CompanyEngine
 from world.families.family_engine import FamilyEngine
 
 
-def main() -> None:
+def test_family_company_real_link() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         families = FamilyEngine(state_file=Path(tmp) / "families.json", auto_load=False)
         companies = CompanyEngine(state_file=Path(tmp) / "companies.json", auto_load=False)
@@ -48,4 +48,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    test_family_company_real_link()
