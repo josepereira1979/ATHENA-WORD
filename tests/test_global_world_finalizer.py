@@ -159,3 +159,25 @@ def test_finalizer_is_idempotent_for_already_assigned_companies():
     assert second["new_assignments"] == 0
     assert second["assigned_real_companies"] == 3
     assert second["closed"] is True
+
+def test_finalizer_reports_extra_unassigned_families():
+    runtime = FakeRuntime(3)
+    extra_id = "FAMILY-EXTRA"
+    runtime.engines["FAMILY"].families[extra_id] = SimpleNamespace(
+        family_id=extra_id,
+        family_name="Extra Family",
+        generation=1,
+        alive=True,
+        member_ids=[],
+        virtual_company_id=None,
+        real_company_id=None,
+        market_exchange=None,
+        market_listing_id=None,
+    )
+
+    result = GlobalWorldFinalizer(runtime).finalize("2026-10-03")
+
+    assert result["assigned_real_companies"] == 3
+    assert result["unassigned_families"] == [extra_id]
+    assert result["closed"] is False
+
