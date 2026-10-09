@@ -232,6 +232,16 @@ class WorldRuntime:
         unit: str | None = None,
     ) -> Dict[str, Any]:
         bridge = self.engines["REALITY_BRIDGE"]
+        registered_sources = {
+            item["name"]: item
+            for item in self.real_world_sources.list_sources()
+        }
+        source_record = registered_sources.get(str(source).upper())
+        if source_record is None or not source_record.get("enabled", False):
+            raise ValueError(
+                f"Fonte externa desconhecida ou desactivada: {source}. "
+                "Registe primeiro a fonte em RealWorldSourceRegistry."
+            )
         mapping = bridge.get_mapping_by_real_company(real_company_id)
         if mapping is None:
             raise ValueError("A empresa real ainda não possui uma empresa WORLD atribuída.")
@@ -269,6 +279,9 @@ class WorldRuntime:
                     self.prediction_engine.validate_from_observation(
                         prediction.prediction_id,
                         world_observation,
+                        validation_source=str(source).upper(),
+                        validation_observation_id=real_observation.observation_id,
+                        validation_data_type=data_type,
                     )
         return {
             "real_observation_id": real_observation.observation_id,
@@ -315,17 +328,41 @@ class WorldRuntime:
         self,
         family_id: str,
         world_date: str,
-        evidence_count: int,
-        validated_predictions: int,
-        correct_predictions: int,
-        critical_challenges: int = 0,
     ) -> Dict[str, Any]:
+        """Avalia usando apenas contagens guardadas pelo WORLD, não números fornecidos pelo chamador."""
+        family = self.engines["FAMILY"].get_family(family_id)
+        if family is None or not family.alive:
+            raise ValueError("Família inexistente ou inactiva.")
+
+        registered_sources = {
+            item["name"].upper()
+            for item in self.real_world_sources.list_sources()
+            if item.get("enabled", False)
+        }
+        validated = [
+            prediction
+            for prediction in self.prediction_engine.get_predictions_by_owner(
+                family_id,
+                owner_type="FAMILY",
+            )
+            if prediction.status == "VALIDATED"
+            and prediction.outcome in {"CORRECT", "WRONG", "PARTIAL"}
+            and getattr(prediction, "validation_data_type", None) == "REAL"
+            and str(getattr(prediction, "validation_source", "")).upper() in registered_sources
+            and getattr(prediction, "validation_observation_id", None)
+        ]
+        correct = sum(1 for prediction in validated if prediction.outcome == "CORRECT")
+        critical_challenges = sum(
+            int(getattr(self.engines["AGENT"].get_agent(agent_id), "hypotheses_challenged", 0))
+            for agent_id in family.member_ids
+            if self.engines["AGENT"].get_agent(agent_id) is not None
+        )
         return self.survival_engine.assess_research(
             family_id=family_id,
             world_date=world_date,
-            evidence_count=evidence_count,
-            validated_predictions=validated_predictions,
-            correct_predictions=correct_predictions,
+            evidence_count=int(family.real_evidence_count),
+            validated_predictions=len(validated),
+            correct_predictions=correct,
             critical_challenges=critical_challenges,
         )
 
