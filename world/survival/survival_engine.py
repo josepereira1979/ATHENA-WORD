@@ -134,6 +134,8 @@ class SurvivalEngine:
             raise ValueError("Família inexistente ou inativa.")
         if evidence_count < 1 or validated_predictions < 1:
             raise ValueError("É necessária evidência e pelo menos uma previsão validada.")
+        if evidence_count > int(family.real_evidence_count):
+            raise ValueError("A avaliação excede a evidência externa registada para esta família.")
         if correct_predictions < 0 or correct_predictions > validated_predictions:
             raise ValueError("Número de previsões corretas inválido.")
         if critical_challenges < 0:
