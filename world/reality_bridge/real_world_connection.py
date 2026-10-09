@@ -29,9 +29,20 @@ class RealWorldConnection:
         }
 
     def status(self) -> Dict[str, Any]:
+        """Distinguish adapter readiness from a verified live external session."""
+        bridge = self.runtime.engines.get("REALITY_BRIDGE")
+        aggregates = bridge.aggregates() if bridge is not None else {}
         return {
-            "connected": True,
+            "connected": False,
+            "live_connection_verified": False,
+            "adapter_ready": True,
             "mode": "ADAPTER_READY",
             "source_of_truth": "EXTERNAL_REAL_WORLD_SOURCES",
+            "ingested_evidence": {
+                "real_observations": int(aggregates.get("real_observations", 0)),
+                "real_events": int(aggregates.get("real_events", 0)),
+                "company_mappings": int(aggregates.get("mappings", 0)),
+            },
+            "note": "Registo de fontes e adaptador prontos não comprovam ligação live.",
             "world": self.runtime.world_snapshot(),
         }
