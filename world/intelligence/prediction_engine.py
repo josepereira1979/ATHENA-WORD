@@ -46,6 +46,9 @@ class Prediction:
     error: Optional[float] = None
     created_at: str = field(default_factory=now_iso)
     updated_at: str = field(default_factory=now_iso)
+    validation_source: Optional[str] = None
+    validation_observation_id: Optional[str] = None
+    validation_data_type: Optional[str] = None
 
 
 class PredictionEngine:
@@ -160,6 +163,9 @@ class PredictionEngine:
         self,
         prediction_id: str,
         observation,
+        validation_source: Optional[str] = None,
+        validation_observation_id: Optional[str] = None,
+        validation_data_type: Optional[str] = None,
     ) -> Optional[Prediction]:
         if observation is None:
             return None
@@ -187,6 +193,9 @@ class PredictionEngine:
             actual_value=observation.value,
             actual_date=observation.world_date,
             outcome=outcome,
+            validation_source=validation_source or getattr(observation, "source_engine", None),
+            validation_observation_id=validation_observation_id or getattr(observation, "observation_id", None),
+            validation_data_type=validation_data_type or getattr(observation, "data_type", None),
         )
 
     def add_evidence(
@@ -215,6 +224,9 @@ class PredictionEngine:
         actual_value: float,
         actual_date: str,
         outcome: Optional[str] = None,
+        validation_source: Optional[str] = None,
+        validation_observation_id: Optional[str] = None,
+        validation_data_type: Optional[str] = None,
     ) -> Optional[Prediction]:
         prediction = self.get_prediction(prediction_id)
         if prediction is None:
@@ -226,6 +238,9 @@ class PredictionEngine:
 
         prediction.actual_value = float(actual_value)
         prediction.actual_date = actual_date
+        prediction.validation_source = validation_source
+        prediction.validation_observation_id = validation_observation_id
+        prediction.validation_data_type = validation_data_type.upper() if validation_data_type else None
         prediction.outcome = (outcome.upper() if outcome else self._derive_outcome(prediction, prediction.actual_value))
         prediction.status = "VALIDATED"
         if prediction.predicted_value is not None:
