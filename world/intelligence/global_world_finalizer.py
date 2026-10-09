@@ -102,18 +102,27 @@ class GlobalWorldFinalizer:
                 world_date=world_date,
             )
 
-            if not family.member_ids:
-                for _ in range(2):
-                    agent = agent_engine.create_agent(
-                        world_date=world_date,
-                        profession=f"Investigador de {company.sector or 'mercado'}",
-                        family_id=family.family_id,
-                        generation=family.generation,
-                    )
-                    family_engine.add_member(family.family_id, agent.agent_id, world_date)
-                    created_agents.append(agent.agent_id)
+            # Repair stale member references and guarantee at least two real
+            # agent records per assigned family (not merely two IDs).
+            valid_member_ids = [
+                agent_id for agent_id in family.member_ids
+                if agent_id in agent_engine.agents
+            ]
+            for stale_id in set(family.member_ids) - set(valid_member_ids):
+                family.member_ids.remove(stale_id)
 
-            for agent_id in family.member_ids:
+            while len(valid_member_ids) < 2:
+                agent = agent_engine.create_agent(
+                    world_date=world_date,
+                    profession=f"Investigador de {company.sector or 'mercado'}",
+                    family_id=family.family_id,
+                    generation=family.generation,
+                )
+                family_engine.add_member(family.family_id, agent.agent_id, world_date)
+                created_agents.append(agent.agent_id)
+                valid_member_ids.append(agent.agent_id)
+
+            for agent_id in valid_member_ids:
                 agent = agent_engine.agents.get(agent_id)
                 if agent is not None and agent.primary_company_id is None:
                     agent.primary_company_id = virtual.company_id
