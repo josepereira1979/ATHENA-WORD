@@ -564,13 +564,13 @@ class WorldRuntime:
                     owner_id=family.family_id,
                     owner_type="FAMILY",
                     world_date=world_date,
-                    event_type="COMPANY_INTELLIGENCE",
-                    description=f"{company.company_id} {metric}={value:.6f}",
+                    event_type="SIMULATED_COMPANY_INTELLIGENCE",
+                    description=f"WORLD_SIMULATION:{company.company_id} {metric}={value:.6f}",
                     outcome="OBSERVED",
                     success=None,
                     impact=0.0,
                     learning_value=0.02,
-                    knowledge_domain="FINANCE",
+                    knowledge_domain="SIMULATION_FINANCE",
                     lesson=f"Acompanhar {metric} da empresa {company.company_name}.",
                 )
 
@@ -617,7 +617,7 @@ class WorldRuntime:
                         world_date=world_date,
                         event_type="NETWORK_SIGNAL",
                         description=(
-                            f"{relation_type}: {related_company.company_id} "
+                            f"WORLD_SIMULATION:{relation_type}: {related_company.company_id} "
                             f"-> {company.company_id}; "
                             f"profit={related_company.profit:.6f}; "
                             f"growth={related_company.growth_rate:.6f}"
@@ -626,7 +626,7 @@ class WorldRuntime:
                         success=None,
                         impact=0.0,
                         learning_value=0.04,
-                        knowledge_domain="NETWORK",
+                        knowledge_domain="SIMULATED_NETWORK",
                         lesson=(
                             "A evolução de uma empresa relacionada pode "
                             "antecipar ou contrariar a empresa atribuída."
