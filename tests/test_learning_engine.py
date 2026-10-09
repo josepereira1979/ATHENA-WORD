@@ -175,10 +175,11 @@ def test_real_world_connection_ingests_only_valid_company_records(tmp_path):
         allocate=True,
     )
 
-    ingestion = result["ingestion"]
+    ingestion = result["ingestion"]["ingestion"]
     assert ingestion["created_companies"] == 1
     assert ingestion["created_listings"] == 1
-    assert ingestion["skipped"] == 1
+    assert ingestion["skipped"] == 0
+    assert result["ingestion"]["validation"] == {"valid": 1, "rejected": 1}
     assert result["finalization"]["closed"] is True
     assert runtime.world_integrity()["status"] == "HEALTHY"
     assert runtime.real_world_connection.status()["live_connection_verified"] is False
