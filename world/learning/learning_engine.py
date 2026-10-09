@@ -431,7 +431,7 @@ class LearningEngine:
 
         # Se uma estratégia foi indicada,
         # atualiza a sua eficácia.
-        if experience.strategy:
+        if experience.strategy and experience.success is not None:
 
             self._update_strategy_from_experience(
                 owner_id=experience.owner_id,
