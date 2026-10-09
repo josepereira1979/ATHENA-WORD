@@ -87,6 +87,18 @@ class Family:
     market_group: Optional[str] = None
     market_listing_id: Optional[str] = None
 
+    # Estado de sobrevivência (unidades normalizadas por dia de simulação).
+    food_reserve: float = 5.0
+    water_reserve: float = 5.0
+    shelter_quality: float = 0.25
+    tools_level: float = 0.0
+    health: float = 1.0
+    energy: float = 1.0
+    survival_days: int = 0
+    evolution_level: int = 1
+    research_quality: float = 0.0
+    survival_status: str = "STABLE"
+
 
 # ============================================================
 # FAMILY ENGINE
