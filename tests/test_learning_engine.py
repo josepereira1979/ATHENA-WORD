@@ -6,7 +6,7 @@ def test_runtime_initializes_learning_engine(tmp_path):
     runtime = WorldRuntime(state_dir=tmp_path, auto_load=False)
     learning = runtime.engines["LEARNING"]
     assert learning.state is not None
-    assert learning.state.world_date == runtime.world_core.state["world_date"]
+    assert learning.state.world_date == runtime.world_core.state.world_date
     learning.process_tick(runtime.world_core.state["world_date"])
     assert learning.state.total_ticks == 1
 
