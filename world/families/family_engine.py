@@ -97,6 +97,9 @@ class Family:
     survival_days: int = 0
     evolution_level: int = 1
     research_quality: float = 0.0
+    real_evidence_count: int = 0
+    research_assessments: int = 0
+    last_research_reward_date: str = ""
     survival_status: str = "STABLE"
 
 
