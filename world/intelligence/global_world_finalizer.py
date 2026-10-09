@@ -149,6 +149,11 @@ class GlobalWorldFinalizer:
         final_assigned = set(assigned_ids)
         orphaned = sorted(eligible_ids - final_assigned)
         duplicate_count = len(assigned_ids) - len(final_assigned)
+        remaining_unassigned_families = sorted(
+            family.family_id
+            for family in family_engine.get_all_families()
+            if family.alive and not family.real_company_id
+        )
 
         return {
             "engine": self.ENGINE_NAME,
@@ -162,6 +167,12 @@ class GlobalWorldFinalizer:
             "new_assignments": len(assignments),
             "assigned_real_companies": len(final_assigned & eligible_ids),
             "unassigned_real_companies": orphaned,
+            "unassigned_families": remaining_unassigned_families,
             "duplicate_real_company_assignments": duplicate_count,
-            "closed": not orphaned and duplicate_count == 0 and len(final_assigned & eligible_ids) == len(eligible_ids),
+            "closed": (
+                not orphaned
+                and not remaining_unassigned_families
+                and duplicate_count == 0
+                and len(final_assigned & eligible_ids) == len(eligible_ids)
+            ),
         }
