@@ -36,6 +36,7 @@ from world.intelligence.global_world_finalizer import GlobalWorldFinalizer
 from world.intelligence.world_control_center import WorldControlCenter
 from world.intelligence.corporate_network_intelligence import CorporateNetworkIntelligence
 from world.orchestration.world_launch_controller import WorldLaunchController
+from world.survival.survival_engine import SurvivalEngine
 
 
 class WorldRuntime:
@@ -127,6 +128,11 @@ class WorldRuntime:
             auto_load=auto_load,
         )
 
+        self.survival_engine = SurvivalEngine(
+            family_engine=self.engines["FAMILY"],
+            agent_engine=self.engines["AGENT"],
+        )
+
         self.orchestrator = WorldOrchestrator(self.world_core)
 
         # Ordem causal: realidade -> economia/recursos -> empresas/mercados
@@ -195,6 +201,7 @@ class WorldRuntime:
         self._update_collective_intelligence(world_date)
         self._create_family_predictions(world_date)
         self._update_family_reputation()
+        self.survival_engine.process_tick(world_date)
 
     def _process_corporate_network_intelligence(self, world_date: str) -> None:
         self.corporate_network_intelligence.process(world_date)
@@ -236,6 +243,13 @@ class WorldRuntime:
             observation_date=observation_date,
             source=source,
             unit=unit,
+        )
+        self.survival_engine.record_real_evidence(
+            real_company_id=real_company_id,
+            metric=metric,
+            source=source,
+            observation_id=real_observation.observation_id,
+            world_date=observation_date,
         )
         observer = self.engines["OBSERVER"]
         previous = observer.get_latest_observation(mapping.virtual_company_id, metric)
@@ -296,6 +310,24 @@ class WorldRuntime:
                 source_event_id=event.event_id,
             )
         return {"event_id": event.event_id, "shock": shock}
+
+    def assess_family_research(
+        self,
+        family_id: str,
+        world_date: str,
+        evidence_count: int,
+        validated_predictions: int,
+        correct_predictions: int,
+        critical_challenges: int = 0,
+    ) -> Dict[str, Any]:
+        return self.survival_engine.assess_research(
+            family_id=family_id,
+            world_date=world_date,
+            evidence_count=evidence_count,
+            validated_predictions=validated_predictions,
+            correct_predictions=correct_predictions,
+            critical_challenges=critical_challenges,
+        )
 
     def connect_real_world(self, records, allocate: bool = True) -> Dict[str, Any]:
         return self.real_world_connection.ingest_and_finalize(records, allocate=allocate)
