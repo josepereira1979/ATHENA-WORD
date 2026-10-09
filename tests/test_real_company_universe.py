@@ -7,7 +7,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from world.reality_bridge.real_company_universe import RealCompanyUniverse
 
 
-def main() -> None:
+def test_real_company_universe_round_trip() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         state = Path(tmp) / "universe.json"
         universe = RealCompanyUniverse(state_file=state, auto_load=False)
@@ -52,4 +52,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    test_real_company_universe_round_trip()
