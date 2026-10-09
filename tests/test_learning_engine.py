@@ -57,6 +57,7 @@ def test_real_observation_validates_prediction_and_teaches_failure(tmp_path):
 
     result = runtime.finalize_global_world()
     assert result["closed"] is True
+    assert runtime.world_integrity()["status"] == "HEALTHY"
     family = next(
         f for f in runtime.engines["FAMILY"].get_all_families()
         if f.real_company_id == real.real_company_id
@@ -99,3 +100,27 @@ def test_real_observation_validates_prediction_and_teaches_failure(tmp_path):
         world_date="2026-10-03",
     )
     assert again == []
+
+
+
+def test_neutral_observation_does_not_count_as_success_or_failure(tmp_path):
+    engine = LearningEngine(state_file=tmp_path / "learning_state.json")
+    engine.initialize("2026-10-01")
+    experience = engine.record_experience(
+        owner_id="FAMILY-NEUTRAL",
+        owner_type="FAMILY",
+        world_date="2026-10-01",
+        event_type="COMPANY_INTELLIGENCE",
+        description="Metric observed without a validated forecast.",
+        outcome="OBSERVED",
+        success=None,
+        learning_value=0.02,
+        knowledge_domain="FINANCE",
+    )
+    assert experience.success is None
+    assert engine.state.total_successes == 0
+    assert engine.state.total_failures == 0
+    knowledge = engine.get_knowledge("FAMILY-NEUTRAL", "FAMILY", "FINANCE")
+    assert knowledge.experience_count == 1
+    assert knowledge.successful_experiences == 0
+    assert knowledge.failed_experiences == 0
