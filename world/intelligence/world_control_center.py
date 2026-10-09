@@ -31,9 +31,9 @@ class WorldControlCenter:
             "engine": self.ENGINE_NAME,
             "version": self.ENGINE_VERSION,
             "world": {
-                "date": self.runtime.world_core.state["world_date"],
-                "tick": self.runtime.world_core.state["tick"],
-                "paused": self.runtime.world_core.state["paused"],
+                "date": self.runtime.world_core.state.world_date,
+                "tick": self.runtime.world_core.state.tick,
+                "paused": self.runtime.world_core.state.paused,
             },
             "population": {
                 "families": len(families),
