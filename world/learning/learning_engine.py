@@ -68,7 +68,7 @@ class Experience:
 
     outcome: str
 
-    success: bool
+    success: Optional[bool]
 
     impact: float = 0.0
 
@@ -294,7 +294,7 @@ class LearningEngine:
         event_type: str,
         description: str,
         outcome: str,
-        success: bool,
+        success: Optional[bool],
         impact: float = 0.0,
         learning_value: float = 0.1,
         knowledge_domain: str = "GENERAL",
@@ -317,7 +317,7 @@ class LearningEngine:
             event_type=event_type,
             description=description,
             outcome=outcome,
-            success=bool(success),
+            success=(None if success is None else bool(success)),
             impact=self._clamp(
                 impact,
                 -1.0,
@@ -338,9 +338,9 @@ class LearningEngine:
             experience_id
         ] = experience
 
-        if experience.success:
+        if experience.success is True:
             self.state.total_successes += 1
-        else:
+        elif experience.success is False:
             self.state.total_failures += 1
 
         self._learn_from_experience(
@@ -401,9 +401,9 @@ class LearningEngine:
 
         record.experience_count += 1
 
-        if experience.success:
+        if experience.success is True:
             record.successful_experiences += 1
-        else:
+        elif experience.success is False:
             record.failed_experiences += 1
 
         gain = (
@@ -416,7 +416,7 @@ class LearningEngine:
 
         # Falhas também ensinam.
         # Uma falha não significa ausência de aprendizagem.
-        if not experience.success:
+        if experience.success is False:
             gain *= 1.15
 
         record.level = self._clamp(
