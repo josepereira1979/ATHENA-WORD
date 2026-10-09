@@ -7,7 +7,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from world.intelligence.prediction_engine import PredictionEngine
 
 
-def main() -> None:
+def test_prediction_engine_round_trip() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         engine = PredictionEngine(
             state_file=Path(tmp) / "predictions.json",
@@ -48,4 +48,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    test_prediction_engine_round_trip()
