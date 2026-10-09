@@ -122,11 +122,16 @@ class GlobalWorldFinalizer:
                 created_agents.append(agent.agent_id)
                 valid_member_ids.append(agent.agent_id)
 
-            for agent_id in valid_member_ids:
+            for index, agent_id in enumerate(valid_member_ids):
                 agent = agent_engine.agents.get(agent_id)
-                if agent is not None and agent.primary_company_id is None:
+                if agent is None:
+                    continue
+                if getattr(agent, "research_role", "GENERALIST") == "GENERALIST":
+                    agent.research_role = "ANALYST" if index == 0 else "CONTRARIAN" if index == 1 else "SPECIALIST"
+                agent.research_focus = company.real_company_id
+                if agent.primary_company_id is None:
                     agent.primary_company_id = virtual.company_id
-                    agent.last_update_world_date = world_date
+                agent.last_update_world_date = world_date
             agent_engine.save()
 
             assigned.add(company.real_company_id)
