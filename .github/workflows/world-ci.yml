@@ -20,4 +20,4 @@ jobs:
       - name: Compile
         run: python -m compileall -q world tests
       - name: Test suite
-        run: python -m pytest -q
+        run: python -m pytest -q -ra
