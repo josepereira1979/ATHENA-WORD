@@ -45,6 +45,8 @@ A partir da raiz do projecto:
 .venv\\Scripts\\python.exe -m world.run_world status
 .venv\\Scripts\\python.exe -m world.run_world integrity
 .venv\\Scripts\\python.exe -m world.run_world preview
+.venv\\Scripts\\python.exe -m world.run_world sync-sec --user-agent "ATHENA WORLD contacto-real@exemplo.pt" --max-new 100
+.venv\\Scripts\\python.exe -m world.run_world readiness
 .venv\\Scripts\\python.exe -m world.run_world cycle --cycles 1
 \`\`\`
 
@@ -55,6 +57,9 @@ A partir da raiz do projecto:
 \`preview\` não avança o relógio.
 
 \`cycle\` avança explicitamente o mundo e executa os processadores registados.
+
+
+`sync-sec` consulta a fonte pública de emissores da SEC e ingere identidades/listings. É necessário substituir o contacto de exemplo por um contacto real no `--user-agent`. O comando não atribui famílias automaticamente; primeiro verificar `preview`, `integrity` e `readiness`. Esta sincronização de emissores não equivale a um feed live de preços/eventos.
 
 ## Povoamento global
 
